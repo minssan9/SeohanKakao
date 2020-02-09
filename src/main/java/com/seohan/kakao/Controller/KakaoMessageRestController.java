@@ -1,5 +1,7 @@
 package com.seohan.kakao.Controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,13 @@ class KakaoMessageRestController {
 	@Autowired
 	private KakaoService kakaoService;
 	 
-	@PostMapping("save")
-	public ResponseEntity<KakaoMessageModel> createKakaoMessageModel(@RequestBody KakaoMessageModel kakaoMessageModel ) throws Exception   { 		
-		KakaoMessageModel KakaoMessageModelCreated = kakaoService.save(kakaoMessageModel );
+//	
+//	@RequestBody Map<String, Object> payload
+	@PostMapping("/save")
+	public ResponseEntity<KakaoMessageModel> createKakaoMessageModel
+			(@RequestBody KakaoMessageModel kakaoMessageModel ) throws Exception   { 		
+		KakaoMessageModel KakaoMessageModelCreated = null; // kakaoService.save(kakaoMessageModel );
+		System.out.println(kakaoMessageModel.toString());
 		return new ResponseEntity<KakaoMessageModel>(KakaoMessageModelCreated, HttpStatus.OK);
 	}	 
 }

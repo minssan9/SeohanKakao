@@ -8,7 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-//(exclude={DataSourceAutoConfiguration.class})
 @PropertySource(value = {"classpath:account.properties" }) 
 @Configuration
 public class SeohanKakaoApplication {
