@@ -3,10 +3,9 @@ package com.seohan.kakao.Domain;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import com.seohan.kakao.Domain.KakaoMessageModel;
 
 import lombok.Data;
 
@@ -15,6 +14,7 @@ import lombok.Data;
 @Table(name = "ITA_TALK_TRAN")
 public class KakaoMessageModel {
 	@Id
+	@GeneratedValue
 	private int mt_pr;
 	private String mt_refkey;
 	private String priority;

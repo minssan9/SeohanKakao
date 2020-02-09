@@ -27,7 +27,7 @@ class KakaoMessageRestController {
 	@PostMapping("/save")
 	public ResponseEntity<KakaoMessageModel> createKakaoMessageModel
 			(@RequestBody KakaoMessageModel kakaoMessageModel ) throws Exception   { 		
-		KakaoMessageModel KakaoMessageModelCreated = null; // kakaoService.save(kakaoMessageModel );
+		KakaoMessageModel KakaoMessageModelCreated = kakaoService.save(kakaoMessageModel );
 		System.out.println(kakaoMessageModel.toString());
 		return new ResponseEntity<KakaoMessageModel>(KakaoMessageModelCreated, HttpStatus.OK);
 	}	 
