@@ -30,6 +30,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
 *.properties
 bin/com/seohan/kakao/SeohanKakaoApplicationTests.kt
 bin/com/seohan/kakao/SQLTest$SeohanKakaoApplicationTests.class
@@ -41,3 +42,7 @@ bin/com/seohan/kakao/Service/KakaoService.class
 bin/com/seohan/kakao/Service/KakaoServiceImpl.class
 *.jar
 *.class
+=======
+src/main/resources/account.properties
+bin/
+
