@@ -1,27 +1,38 @@
 package com.seohan.kakao.Domain;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
+@Getter
+@Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "ITA_TALK_TRAN")
-public class KakaoMessageModel {
+public class KakaoMessageModel {  
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int mt_pr;
 	private String mt_refkey;
-	private String priority;
+	private String priority="";
 	private Date date_client_req;
 	private String subject;
 	private String content;
-	private String callback;
+	private String callback="";
 	private String msg_status;
 	private String recipient_num;
 	private Date date_mt_sent;
@@ -36,8 +47,8 @@ public class KakaoMessageModel {
 	private Date reg_date;
 	private String sender_key;
 	private String template_code;
-	private String response_method;
-	private String ad_flag;
+	private String response_method="";
+	private String ad_flag = "";
 	private String kko_btn_type;
 	private String kko_btn_info;
 	private String img_url;
@@ -49,4 +60,5 @@ public class KakaoMessageModel {
 	private int etc_num_2;
 	private int etc_num_3;
 	private Date etc_date_1; 
+	
 }

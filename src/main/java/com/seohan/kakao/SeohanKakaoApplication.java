@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@EnableAutoConfiguration
+// @EnableAutoConfiguration
 //@PropertySource(value = {"classpath:account.properties" }) 
-@Configuration
+// @Configuration
 public class SeohanKakaoApplication {
 
 	public static void main(String[] args) {
