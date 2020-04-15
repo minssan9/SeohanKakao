@@ -48,6 +48,5 @@ public class KakaoMessageModel {
 	private int etc_num_1;
 	private int etc_num_2;
 	private int etc_num_3;
-	private Date etc_date_1;
-
+	private Date etc_date_1; 
 }
