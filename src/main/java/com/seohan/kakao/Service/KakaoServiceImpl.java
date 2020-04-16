@@ -23,6 +23,7 @@ public class KakaoServiceImpl implements KakaoService {
 		try {			
 			Date date = new Date();
 			kakaoMessageModel.setMt_refkey(null);
+			kakaoMessageModel.setIta_id(" ");
 			kakaoMessageModel.setAd_flag("N");
 			kakaoMessageModel.setResponse_method("push");
 			kakaoMessageModel.setPriority("S");
@@ -34,7 +35,7 @@ public class KakaoServiceImpl implements KakaoService {
 			kakaoMessageModel.setCountry_code("82");
 			kakaoMessageModel.setMsg_status( "1");
 			kakaoMessageModel.setTemplate_code("COM_LONG_02");
-			kakaoMessageModel.setSubject("");
+//			kakaoMessageModel.setSubject("");
 			kakaoMessageModel.setContent(" [시스템 알림] \n\n" +
 					" ■ 시스템 구분 : " + kakaoMessageModel.getSubject() + "\n" +  
 					" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
