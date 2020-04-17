@@ -49,6 +49,15 @@ class KakaoMessageRestController {
 	public ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception   { 		
  
 		if(isNumeric(messageDto.getAccountId().substring(0,1))) {
+			KakaoMessageModel kakaoMessageModel = new KakaoMessageModel();
+			kakaoMessageModel.setSubject(messageDto.getSubject());
+			kakaoMessageModel.setContent(messageDto.getContent());
+			kakaoMessageModel.setRecipient_num(messageDto.getRecipient_num());
+			kakaoMessageModel.setTemplate_code(messageDto.getTemplate_code()); 
+
+			KakaoMessageModel KakaoMessageModelCreated = kakaoService.save(kakaoMessageModel );		
+			// grap 알림 병행 테스트기간 
+
 			// grap massenger http Post  
 			URL url = new URL(baseUrl); // URL 설정  
 
@@ -77,7 +86,10 @@ class KakaoMessageRestController {
 			JSONObject docuObject = (JSONObject) jsonObject.get(0); 			//배열 i번째 요소 불러오고
 			         
 //			logger.info(docuObject.get("msg").toString());
-			String result = jsonObject.get("msg").toString();
+			String result = "OK";
+			if ( jsonObject.get("msg") != null){
+				result = jsonObject.get("msg").toString();
+			}
 			System.out.println(response);  
 			return new ResponseEntity<String>(result, HttpStatus.OK);	 
 		}else		{
