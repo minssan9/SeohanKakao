@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KakaoServiceImpl implements KakaoService {
+public class GrapServiceImpl implements GrapService {
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
  
 	@Value("${kakaoMessage.apiKey}")
