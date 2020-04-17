@@ -46,9 +46,9 @@ class KakaoMessageRestController {
 			kakaoMessageModel.setContent(kakaoMessageDto.getContent());
 			kakaoMessageModel.setRecipient_num(kakaoMessageDto.getRecipient_num());
 			kakaoMessageModel.setTemplate_code(kakaoMessageDto.getTemplate_code()); 
-			
+
 			KakaoMessageModel KakaoMessageModelCreated = kakaoService.save(kakaoMessageModel );		
-			return new ResponseEntity<String>(KakaoMessageModelCreated.getMt_refkey(), HttpStatus.OK);	
+			return new ResponseEntity<String>("OK", HttpStatus.OK);	
 		}		
 		
 	}
