@@ -23,8 +23,8 @@ public class KakaoMessageApplicationTests {
 	// @Autowired
 	// private MockMvc mockMvc;
 	 	
-	@Test 
-	public void requestTest () throws Exception {		
+	// @Test 
+	// public void requestTest () throws Exception {		
 		// KakaoMessageModel kakaoMessageModel = new KakaoMessageModel();
 		// 	kakaoMessageModel.builder().content("[사내 자동 발송]  \r\n\r\n" +
         //             " ■ 내용 \r\n " + "CONTENT" + "\r\n" + 
@@ -62,7 +62,7 @@ public class KakaoMessageApplicationTests {
 		// 		.contentType(MediaType.APPLICATION_JSON)
 		// 		.accept(MediaType.APPLICATION_JSON))
 	    //         .andExpect(status().isOk()); 
-	}
+	// }
 
     // public static String asJsonString(final Object obj) {
     //     try {
