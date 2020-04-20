@@ -20,6 +20,10 @@ import com.seohan.kakao.Domain.KakaoMessageModel;
 // @AutoConfigureMockMvc
 public class KakaoMessageApplicationTests {
 	
+	@Test
+	public void contextLoads() {
+	}
+
 	// @Autowired
 	// private MockMvc mockMvc;
 	 	
