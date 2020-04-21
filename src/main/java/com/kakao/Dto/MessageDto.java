@@ -1,4 +1,4 @@
-package com.seohan.kakao.Dto;
+package com.kakao.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

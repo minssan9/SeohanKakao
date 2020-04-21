@@ -1,27 +1,27 @@
-package com.seohan.kakao.Service;
+package com.kakao.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.seohan.kakao.Domain.KakaoMessageModel;
-import com.seohan.kakao.Mapper.KakaoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.kakao.kamtec.mapper.KamtecRepository;
+import com.kakao.seohan.domain.SeohanMessageModel;
+
 @Service
-public class GrapServiceImpl implements GrapService {
+public class KakaoServiceImpl implements KakaoService {
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
  
 	@Value("${kakaoMessage.apiKey}")
 	String senderKey ;
 
     @Autowired
-    KakaoRepository kakaoRepository;
+    KamtecRepository kakaoRepository;
         
 	@Override 
-	public KakaoMessageModel save(KakaoMessageModel kakaoMessageModel) throws Exception  {
+	public SeohanMessageModel save(SeohanMessageModel kakaoMessageModel) throws Exception  {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 		try {			
