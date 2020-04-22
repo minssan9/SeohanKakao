@@ -13,7 +13,8 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor 
-public class MessageDto {    
+public class MessageDto {
+	private String company; 
 	private String mt_refkey; 
 	private String accountId; 
 	private String subject;

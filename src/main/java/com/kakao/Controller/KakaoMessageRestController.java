@@ -25,7 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.kakao.Dto.MessageDto;
 import com.kakao.Service.KakaoService;
-import com.kakao.seohan.domain.SeohanMessageModel;
+import com.kakao.domain.KakaoMessageModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,16 +48,7 @@ class KakaoMessageRestController {
 	@PostMapping("/save")
 	public ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception   { 		
  
-		if(isNumeric(messageDto.getAccountId().substring(0,1))) {
-			SeohanMessageModel kakaoMessageModel = new SeohanMessageModel();
-			kakaoMessageModel.setSubject(messageDto.getSubject());
-			kakaoMessageModel.setContent(messageDto.getContent());
-			kakaoMessageModel.setRecipient_num(messageDto.getRecipient_num());
-			kakaoMessageModel.setTemplate_code(messageDto.getTemplate_code()); 
-
-			SeohanMessageModel KakaoMessageModelCreated = kakaoService.save(kakaoMessageModel );		
-			// grap 알림 병행 테스트기간 
-
+		if(isNumeric(messageDto.getAccountId().substring(0,1))) {  
 			// grap massenger http Post  
 			URL url = new URL(baseUrl); // URL 설정  
 
@@ -84,7 +75,8 @@ class KakaoMessageRestController {
 			JSONParser jsonParser = new JSONParser(); 
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());
 			JSONObject docuObject = (JSONObject) jsonObject.get(0); 			//배열 i번째 요소 불러오고
-			         
+
+			KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );		
 //			logger.info(docuObject.get("msg").toString());
 			String result = "OK";
 			if ( jsonObject.get("msg") != null){
@@ -92,14 +84,8 @@ class KakaoMessageRestController {
 			}
 			System.out.println(response);  
 			return new ResponseEntity<String>(result, HttpStatus.OK);	 
-		}else		{
-			SeohanMessageModel kakaoMessageModel = new SeohanMessageModel();
-			kakaoMessageModel.setSubject(messageDto.getSubject());
-			kakaoMessageModel.setContent(messageDto.getContent());
-			kakaoMessageModel.setRecipient_num(messageDto.getRecipient_num());
-			kakaoMessageModel.setTemplate_code(messageDto.getTemplate_code()); 
-
-			SeohanMessageModel KakaoMessageModelCreated = kakaoService.save(kakaoMessageModel );		
+		}else		{ 
+			KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );					
 			return new ResponseEntity<String>("OK", HttpStatus.OK);	
 		}		
 		

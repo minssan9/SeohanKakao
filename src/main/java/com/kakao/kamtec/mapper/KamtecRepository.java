@@ -1,17 +1,14 @@
 package com.kakao.kamtec.mapper;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.kakao.seohan.domain.SeohanMessageModel; 
+import com.kakao.domain.KakaoMessageModel; 
 
 @Repository
-public interface KamtecRepository extends JpaRepository<SeohanMessageModel, Long> {	 
+public interface KamtecRepository extends JpaRepository<KakaoMessageModel, Long> {	 
 
 	@Query(value="insert into ita_talk_tran " + 
 				"(date_client_req, content, msg_status, recipient_num, msg_type, sender_key, template_code, country_code)" + 

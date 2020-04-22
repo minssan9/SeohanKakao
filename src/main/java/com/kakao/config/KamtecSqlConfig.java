@@ -36,7 +36,7 @@ public class KamtecSqlConfig {
     
     @Bean
     public LocalContainerEntityManagerFactoryBean kamtecEntityManagerFactory(@Qualifier("kamtecDataSource") DataSource hubDataSource, EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(hubDataSource).packages("com.kamtec.kakao.domain")
+        return builder.dataSource(hubDataSource).packages("com.kakao.domain")
                 .persistenceUnit("kamtec").build();
     }
 

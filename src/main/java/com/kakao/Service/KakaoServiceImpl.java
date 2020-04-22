@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.kakao.Dto.MessageDto;
+import com.kakao.domain.KakaoMessageModel;
 import com.kakao.kamtec.mapper.KamtecRepository;
-import com.kakao.seohan.domain.SeohanMessageModel;
+import com.kakao.seohan.mapper.SeohanRepository;
 
 @Service
 public class KakaoServiceImpl implements KakaoService {
@@ -18,13 +20,21 @@ public class KakaoServiceImpl implements KakaoService {
 	String senderKey ;
 
     @Autowired
-    KamtecRepository kakaoRepository;
+    KamtecRepository kamtecRepository;
+    @Autowired
+    SeohanRepository seohanRepository;
         
 	@Override 
-	public SeohanMessageModel save(SeohanMessageModel kakaoMessageModel) throws Exception  {
+	public KakaoMessageModel save(MessageDto messageDto) throws Exception  {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		
-		try {			
+
+		KakaoMessageModel kakaoMessageModel = new KakaoMessageModel();
+		try {		
+			kakaoMessageModel.setSubject(messageDto.getSubject());
+			kakaoMessageModel.setContent(messageDto.getContent());
+			kakaoMessageModel.setRecipient_num(messageDto.getRecipient_num());
+			kakaoMessageModel.setTemplate_code(messageDto.getTemplate_code());  
+			
 			Date date = new Date();
 			kakaoMessageModel.setMt_refkey(null);
 			kakaoMessageModel.setIta_id(" ");
@@ -66,9 +76,16 @@ public class KakaoServiceImpl implements KakaoService {
 						" 자세한 내용은 전산시스템에서 확인하시기 바랍니다.");
 					break;
 			} 
-			
-			// kakaoRepository.sendMessage(kakaoMessageModel.getTemplate_code(), kakaoMessageModel.getRecipient_num(), kakaoMessageModel.getContent() );
-			kakaoRepository.save(kakaoMessageModel);	
+
+			switch (messageDto.getCompany()) {
+				case "seohan":
+					seohanRepository.save(kakaoMessageModel);
+					break;
+				case "kamtec":
+					kamtecRepository.save(kakaoMessageModel);
+					break;
+			}	
+				
 		} catch (Exception e) {
 			System.out.println("message Send failed" + kakaoMessageModel.toString());
 			return kakaoMessageModel;

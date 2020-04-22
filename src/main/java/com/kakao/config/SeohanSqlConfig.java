@@ -37,7 +37,7 @@ public class SeohanSqlConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean seohanEntityManagerFactory(@Qualifier("seohanDataSource") DataSource hubDataSource, EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(hubDataSource).packages("com.kakao.seohan.domain")
+        return builder.dataSource(hubDataSource).packages("com.kakao.domain")
                 .persistenceUnit("seohan").build();
     }
 

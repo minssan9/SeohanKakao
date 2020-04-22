@@ -66,9 +66,7 @@ public class GrapServiceImpl implements GrapService {
 						" 자세한 내용은 전산시스템에서 확인하시기 바랍니다.");
 					break;
 			} 
-			
-			// kakaoRepository.sendMessage(kakaoMessageModel.getTemplate_code(), kakaoMessageModel.getRecipient_num(), kakaoMessageModel.getContent() );
-			kakaoRepository.save(kakaoMessageModel);	
+			 	
 		} catch (Exception e) {
 			System.out.println("message Send failed" + kakaoMessageModel.toString());
 			return kakaoMessageModel;
