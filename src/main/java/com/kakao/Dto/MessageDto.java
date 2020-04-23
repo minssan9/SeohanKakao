@@ -33,4 +33,6 @@ public class MessageDto {
 	private String codeno;
 	private String msg;
 	private String data;
+	
+	private String result;
 }

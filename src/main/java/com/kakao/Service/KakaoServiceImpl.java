@@ -78,10 +78,10 @@ public class KakaoServiceImpl implements KakaoService {
 			} 
 
 			switch (messageDto.getCompany()) {
-				case "seohan":
+				case "SEOHAN":
 					seohanRepository.save(kakaoMessageModel);
 					break;
-				case "kamtec":
+				case "KAMTEC":
 					kamtecRepository.save(kakaoMessageModel);
 					break;
 			}	
