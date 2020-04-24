@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.kakao.Dto.MessageDto;
 import com.kakao.domain.KakaoMessageModel;
-import com.kakao.kamtec.mapper.KamtecRepository;
-import com.kakao.seohan.mapper.SeohanRepository;
+import com.kakao.kamtec.mapper.KakaoKamtecRepository;
+import com.kakao.seohan.mapper.KakaoSeohanRepository;
 
 @Service
 public class KakaoServiceImpl implements KakaoService {
@@ -20,9 +20,9 @@ public class KakaoServiceImpl implements KakaoService {
 	String senderKey ;
 
     @Autowired
-    KamtecRepository kamtecRepository;
+    KakaoKamtecRepository kamtecRepository;
     @Autowired
-    SeohanRepository seohanRepository;
+    KakaoSeohanRepository seohanRepository;
         
 	@Override 
 	public KakaoMessageModel save(MessageDto messageDto) throws Exception  {

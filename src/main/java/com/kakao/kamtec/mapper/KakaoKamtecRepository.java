@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.kakao.domain.KakaoMessageModel; 
 
 @Repository
-public interface KamtecRepository extends JpaRepository<KakaoMessageModel, Long> {	 
+public interface KakaoKamtecRepository extends JpaRepository<KakaoMessageModel, Long> {	 
 
 	@Query(value="insert into ita_talk_tran " + 
 				"(date_client_req, content, msg_status, recipient_num, msg_type, sender_key, template_code, country_code)" + 

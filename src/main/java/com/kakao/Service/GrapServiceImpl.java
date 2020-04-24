@@ -3,6 +3,7 @@ package com.kakao.Service;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONObject;
@@ -21,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.kakao.Dto.MessageDto;
-import com.kakao.kamtec.mapper.KamtecRepository;
+import com.kakao.domain.GrapMessageModel;
+import com.kakao.kamtec.mapper.GrapKamtecRepository;
+import com.kakao.seohan.mapper.GrapSeohanRepository;
 
 @Service
 public class GrapServiceImpl implements GrapService {
@@ -37,11 +40,17 @@ public class GrapServiceImpl implements GrapService {
 	String senderSno ;
 
     @Autowired
-    KamtecRepository kakaoRepository;
+    GrapKamtecRepository grapKamtecRepository;
+    
+    @Autowired
+    GrapSeohanRepository grapSeohanRepository;
         
 	@Override 
 	public MessageDto save(MessageDto messageDto) throws Exception  { 
 		String result = "OK";
+
+		GrapMessageModel grapMessageModel = new GrapMessageModel();
+		
 		try {	
 			URL url = new URL(baseUrl); // URL 설정  
 
@@ -72,8 +81,35 @@ public class GrapServiceImpl implements GrapService {
 			if ( jsonObject.get("msg") != null){
 				result = jsonObject.get("msg").toString();
 			}
-			messageDto.setResult(result);
+			messageDto.setResult(result);			
 			System.out.println(response);  
+			
+			grapMessageModel.setSubject(messageDto.getSubject());
+			grapMessageModel.setContent(messageDto.getContent());
+//			grapMessageModel.setReceiver_id(messageDto.getRecipient_num());
+			grapMessageModel.setTemplate_code(messageDto.getTemplate_code());  
+			
+			Date date = new Date();
+			grapMessageModel.setPriority("S");
+			grapMessageModel.setCallback("");
+			grapMessageModel.setReg_date(date);
+			grapMessageModel.setDate_client_req(date);
+			grapMessageModel.setSenderSno(senderSno);
+			grapMessageModel.setMsg_type(1008);
+			grapMessageModel.setCountry_code("82");
+			grapMessageModel.setMsg_status( "1");
+			grapMessageModel.setTemplate_code("COM_LONG_02");
+		
+			
+			switch (messageDto.getCompany()) {
+				case "SEOHAN":
+					grapSeohanRepository.save(grapMessageModel);
+					break;
+				case "KAMTEC":
+					grapKamtecRepository.save(grapMessageModel);
+					break;
+			}	
+			
 			return messageDto;			 	
 		} catch (Exception e) {
 			System.out.println("message Send failed" + messageDto.toString());

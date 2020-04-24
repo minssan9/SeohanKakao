@@ -27,17 +27,18 @@ public class GrapMessageModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int mt_pr;
-	private String priority="";
+	private String priority;
+	private String account_id;
 	private Date date_client_req;
 	private String subject;
-	private String text;
-	private String callback="";
+	private String content;
+	private String callback;
 	private String msg_status;
-	private String receiverId;
+	private String receiver_id;
 	private String report_code;
 	private String country_code;
-	private int msg_type;
+	private int msg_type;	
 	private Date reg_date;
 	private String senderSno;
-	private String template_code;
+	private String template_code;	
 }
