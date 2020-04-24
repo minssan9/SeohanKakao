@@ -82,38 +82,37 @@ public class GrapServiceImpl implements GrapService {
 				result = jsonObject.get("msg").toString();
 			}
 			messageDto.setResult(result);			
-			System.out.println(response);  
-			
-			grapMessageModel.setSubject(messageDto.getSubject());
-			grapMessageModel.setContent(messageDto.getContent());
-//			grapMessageModel.setReceiver_id(messageDto.getRecipient_num());
-			grapMessageModel.setTemplate_code(messageDto.getTemplate_code());  
-			
-			Date date = new Date();
-			grapMessageModel.setPriority("S");
-			grapMessageModel.setCallback("");
-			grapMessageModel.setReg_date(date);
-			grapMessageModel.setDate_client_req(date);
-			grapMessageModel.setSenderSno(senderSno);
-			grapMessageModel.setMsg_type(1008);
-			grapMessageModel.setCountry_code("82");
-			grapMessageModel.setMsg_status( "1");
-			grapMessageModel.setTemplate_code("COM_LONG_02");
-		
-			
-			switch (messageDto.getCompany()) {
-				case "SEOHAN":
-					grapSeohanRepository.save(grapMessageModel);
-					break;
-				case "KAMTEC":
-					grapKamtecRepository.save(grapMessageModel);
-					break;
-			}	
-			
-			return messageDto;			 	
+			System.out.println(response);   
 		} catch (Exception e) {
 			System.out.println("message Send failed" + messageDto.toString());
-			return messageDto;
 		}
+		
+		grapMessageModel.setSubject(messageDto.getSubject());
+		grapMessageModel.setContent(messageDto.getContent());
+//		grapMessageModel.setReceiver_id(messageDto.getRecipient_num());
+		grapMessageModel.setTemplate_code(messageDto.getTemplate_code());  
+		
+		Date date = new Date();
+		grapMessageModel.setPriority("S");
+		grapMessageModel.setCallback("");
+		grapMessageModel.setReg_date(date);
+		grapMessageModel.setDate_client_req(date);
+		grapMessageModel.setSenderSno(senderSno);
+		grapMessageModel.setMsg_type(1008);
+		grapMessageModel.setCountry_code("82");
+		grapMessageModel.setMsg_status( "1");
+		grapMessageModel.setTemplate_code("COM_LONG_02");
+	
+		
+		switch (messageDto.getCompany()) {
+			case "SEOHAN":
+				grapSeohanRepository.save(grapMessageModel);
+				break;
+			case "KAMTEC":
+				grapKamtecRepository.save(grapMessageModel);
+				break;
+		}	
+
+		return messageDto;
 	} 
 }
