@@ -15,13 +15,12 @@ import com.kakao.domain.KakaoMessageModel;
 
 import lombok.extern.slf4j.Slf4j;
 
-@RequestMapping("/kakao")
-@Slf4j 
+@RequestMapping("/kakao") 
 @RestController
 class KakaoMessageRestController {
-	@Autowired
-	private KakaoService kakaoService;
 	
+	@Autowired
+	private KakaoService kakaoService;	
 	@Autowired
 	private GrapService grapService;
 

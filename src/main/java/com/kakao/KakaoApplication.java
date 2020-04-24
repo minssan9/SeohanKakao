@@ -6,10 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-@SpringBootApplication
-// @EnableAutoConfiguration
-@PropertySource(value = {"classpath:account.properties" }) 
-// @Configuration
+@SpringBootApplication 
+@PropertySource(value = {"classpath:account.properties" })  
 public class KakaoApplication {
 
 	public static void main(String[] args) {
