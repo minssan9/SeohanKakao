@@ -29,11 +29,11 @@ class KakaoMessageRestController {
 	public ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception   { 		
 		String result;
 		if(isNumeric(messageDto.getAccountId().substring(0,1))) {  
-			// grap massenger http Post  
-			
+			// grap massenger http Post   
 			MessageDto messageDtoCreated = grapService.save(messageDto );
+			KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );			
 			result = messageDtoCreated.getResult();
-			return new ResponseEntity<String>(result , HttpStatus.OK);	 
+			return new ResponseEntity<String>(result , HttpStatus.OK);
 		}else		{ 
 			KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );					
 			return new ResponseEntity<String>("OK", HttpStatus.OK);	

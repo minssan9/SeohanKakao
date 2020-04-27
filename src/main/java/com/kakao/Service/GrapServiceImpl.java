@@ -3,7 +3,11 @@ package com.kakao.Service;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import com.kakao.Dto.MessageDto;
+import com.kakao.kamtec.mapper.KamtecRepository;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,9 +23,6 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import com.kakao.Dto.MessageDto;
-import com.kakao.kamtec.mapper.KamtecRepository;
 
 @Service
 public class GrapServiceImpl implements GrapService {
@@ -42,6 +43,7 @@ public class GrapServiceImpl implements GrapService {
 	@Override 
 	public MessageDto save(MessageDto messageDto) throws Exception  { 
 		String result = "OK";
+		Date date = new Date();
 		try {	
 			URL url = new URL(baseUrl); // URL 설정  
 
@@ -58,12 +60,29 @@ public class GrapServiceImpl implements GrapService {
 			headers.setContentType(MediaType.APPLICATION_JSON); 
 			headers.add("cp-key-spec", cpKeySpec);
 
+			// messageDto.setAccountId("dhl19923");
 			messageDto.setSenderSno(senderSno);
 			messageDto.setReceiverId(messageDto.getAccountId() + "@seohan.com");
-			messageDto.setText(messageDto.getContent());
+			switch(messageDto.getTemplate_code()){ 
+				case "":
+					break;
+				case "COM_LONG_03":
+					messageDto.setText(" [시스템 알림] \n\n" +
+						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +  
+						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
+						" ■ 발신자 : " + messageDto.getSendName() + "\n" + 
+						" ■ 발신 번호 : " + messageDto.getSendNo() + "\n" + 
+						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
+					break;
+				default:
+					messageDto.setText(" [시스템 알림] \n\n" +
+						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +  
+						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
+						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
+					break;
+			}  
 
-			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);			
- 
+			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);			 
 			ResponseEntity<String> response = restTemplate.postForEntity(url.toString(), requestEntity, String.class); 
 			JSONParser jsonParser = new JSONParser(); 
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());

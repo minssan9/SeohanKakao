@@ -24,6 +24,7 @@ public class MessageDto {
 	private String country_code; 
 	private String template_code;  
 
+
 	private String cpKeySpec;
 	private String senderSno;
 	private String receiverId;
@@ -34,5 +35,7 @@ public class MessageDto {
 	private String msg;
 	private String data;
 	
+	private String sendNo;
+	private String sendName;
 	private String result;
 }
