@@ -49,7 +49,7 @@ public class KakaoServiceImpl implements KakaoService {
 			kakaoMessageModel.setMsg_type(1008);
 			kakaoMessageModel.setCountry_code("82");
 			kakaoMessageModel.setMsg_status( "1");
-			kakaoMessageModel.setTemplate_code("COM_LONG_02");
+			kakaoMessageModel.setTemplate_code("COM_LONG_03");
 			
 			switch(kakaoMessageModel.getTemplate_code()){
 				case "COM_LONG_00":

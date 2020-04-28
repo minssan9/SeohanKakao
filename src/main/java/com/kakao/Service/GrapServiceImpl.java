@@ -63,9 +63,7 @@ public class GrapServiceImpl implements GrapService {
 			// messageDto.setAccountId("dhl19923");
 			messageDto.setSenderSno(senderSno);
 			messageDto.setReceiverId(messageDto.getAccountId() + "@seohan.com");
-			switch(messageDto.getTemplate_code()){ 
-				case "":
-					break;
+			switch(messageDto.getTemplate_code()){  
 				case "COM_LONG_03":
 					messageDto.setText(" [시스템 알림] \n\n" +
 						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +  
