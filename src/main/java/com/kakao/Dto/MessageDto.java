@@ -14,6 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor 
 public class MessageDto {
+//kakao 
 	private String company; 
 	private String mt_refkey; 
 	private String accountId; 
@@ -24,6 +25,7 @@ public class MessageDto {
 	private String country_code; 
 	private String template_code;  
 
+//grap 
 	private String cpKeySpec;
 	private String senderSno;
 	private String receiverId;
@@ -33,6 +35,8 @@ public class MessageDto {
 	private String codeno;
 	private String msg;
 	private String data;
-	
+
+	private String sendNo;
+	private String sendName;
 	private String result;
 }

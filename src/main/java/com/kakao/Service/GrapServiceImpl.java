@@ -24,8 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import com.kakao.Dto.MessageDto;
 import com.kakao.domain.GrapMessageModel;
 import com.kakao.kamtec.mapper.GrapKamtecRepository;
-import com.kakao.seohan.mapper.GrapSeohanRepository;
-
+import com.kakao.seohan.mapper.GrapSeohanRepository; 
 @Service
 public class GrapServiceImpl implements GrapService {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -48,9 +47,9 @@ public class GrapServiceImpl implements GrapService {
 	@Override 
 	public MessageDto save(MessageDto messageDto) throws Exception  { 
 		String result = "OK";
-
 		GrapMessageModel grapMessageModel = new GrapMessageModel();
-		
+		Date date = new Date();
+
 		try {	
 			URL url = new URL(baseUrl); // URL 설정  
 
@@ -67,12 +66,27 @@ public class GrapServiceImpl implements GrapService {
 			headers.setContentType(MediaType.APPLICATION_JSON); 
 			headers.add("cp-key-spec", cpKeySpec);
 
+			// messageDto.setAccountId("dhl19923");
 			messageDto.setSenderSno(senderSno);
 			messageDto.setReceiverId(messageDto.getAccountId() + "@seohan.com");
-			messageDto.setText(messageDto.getContent());
+			switch(messageDto.getTemplate_code()){  
+				case "COM_LONG_03":
+					messageDto.setText(" [시스템 알림] \n\n" +
+						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +  
+						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
+						" ■ 발신자 : " + messageDto.getSendName() + "\n" + 
+						" ■ 발신 번호 : " + messageDto.getSendNo() + "\n" + 
+						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
+					break;
+				default:
+					messageDto.setText(" [시스템 알림] \n\n" +
+						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +  
+						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
+						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
+					break;
+			}  
 
-			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);			
- 
+			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);			 
 			ResponseEntity<String> response = restTemplate.postForEntity(url.toString(), requestEntity, String.class); 
 			JSONParser jsonParser = new JSONParser(); 
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());
@@ -91,8 +105,7 @@ public class GrapServiceImpl implements GrapService {
 		grapMessageModel.setContent(messageDto.getContent());
 //		grapMessageModel.setReceiver_id(messageDto.getRecipient_num());
 		grapMessageModel.setTemplate_code(messageDto.getTemplate_code());  
-		
-		Date date = new Date();
+		 
 		grapMessageModel.setPriority("S");
 		grapMessageModel.setCallback("");
 		grapMessageModel.setReg_date(date);
@@ -101,8 +114,7 @@ public class GrapServiceImpl implements GrapService {
 		grapMessageModel.setMsg_type(1008);
 		grapMessageModel.setCountry_code("82");
 		grapMessageModel.setMsg_status( "1");
-		grapMessageModel.setTemplate_code("COM_LONG_02");
-	
+		grapMessageModel.setTemplate_code("COM_LONG_03"); 
 		
 		switch (messageDto.getCompany()) {
 			case "SEOHAN":

@@ -18,4 +18,5 @@ public interface KakaoSeohanRepository extends JpaRepository<KakaoMessageModel, 
 							 @Param("recipient_num") String recipient_num,
 							 @Param("content") String content ) throws Exception;
 	 
+							 
 }
