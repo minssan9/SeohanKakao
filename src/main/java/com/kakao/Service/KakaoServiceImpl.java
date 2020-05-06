@@ -58,8 +58,8 @@ public class KakaoServiceImpl implements KakaoService {
 						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
 						" ■ 상세 내용\r\n" + kakaoMessageModel.getContent() );
 					break; 
-				case "COM_LONG_03":
-					kakaoMessageModel.setContent(" [시스템 알림] \n\n" +
+				case "COM_LONG_03": 
+					kakaoMessageModel.setContent(" [시스템 발송] \n\n" +
 						" ■ 시스템 구분 : " + kakaoMessageModel.getSubject() + "\n" +  
 						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
 						" ■ 발신자 : " + messageDto.getSendName() + "\n" + 
