@@ -16,8 +16,11 @@ import com.kakao.seohan.mapper.SeohanRepository;
 public class KakaoServiceImpl implements KakaoService {
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
  
-	@Value("${kakaoMessage.apiKey}")
-	String senderKey ;
+	@Value("${kakaoMessage.seohan.apiKey}")
+	String senderKeySeohan ;
+	
+	@Value("${kakaoMessage.kamtec.apiKey}")
+	String senderKeyKamtec ;
 
     @Autowired
     KamtecRepository kamtecRepository;
@@ -45,7 +48,6 @@ public class KakaoServiceImpl implements KakaoService {
 			kakaoMessageModel.setCallback("");
 			kakaoMessageModel.setReg_date(date);
 			kakaoMessageModel.setDate_client_req(date);
-			kakaoMessageModel.setSender_key(senderKey);
 			kakaoMessageModel.setMsg_type(1008);
 			kakaoMessageModel.setCountry_code("82");
 			kakaoMessageModel.setMsg_status( "1");
@@ -80,9 +82,11 @@ public class KakaoServiceImpl implements KakaoService {
 
 			switch (messageDto.getCompany()) {
 				case "SEOHAN":
+					kakaoMessageModel.setSender_key(senderKeySeohan);
 					seohanRepository.save(kakaoMessageModel);
 					break;
 				case "KAMTEC":
+					kakaoMessageModel.setSender_key(senderKeyKamtec);
 					kamtecRepository.save(kakaoMessageModel);
 					break;
 				default:

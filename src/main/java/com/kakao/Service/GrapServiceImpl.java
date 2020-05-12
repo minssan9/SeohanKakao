@@ -60,9 +60,10 @@ public class GrapServiceImpl implements GrapService {
 			headers.setContentType(MediaType.APPLICATION_JSON); 
 			headers.add("cp-key-spec", cpKeySpec);
 
-			// messageDto.setAccountId("dhl19923");
+			//  messageDto.setAccountId("dhl19923");
 			messageDto.setSenderSno(senderSno);
-			messageDto.setReceiverId(messageDto.getAccountId() + "@seohan.com");
+			messageDto.setReceiverId(messageDto.getEmail());
+
 			switch(messageDto.getTemplate_code()){  
 				case "COM_LONG_03":
 					messageDto.setText(" [시스템 알림] \n\n" +
