@@ -21,7 +21,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.message.Dto.MessageDto;
+import com.message.dto.MessageDto;
 import com.message.grap.mapper.GrapRepository;
 import com.message.mssql.domain.GrapMessageModel;
 
