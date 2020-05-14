@@ -1,13 +1,10 @@
-package com.kakao.Service;
+package com.message.service;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.kakao.Dto.MessageDto;
-import com.kakao.kamtec.mapper.KamtecRepository;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,6 +21,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.message.Dto.MessageDto;
+import com.message.domain.GrapMessageModel;
+import com.message.grap.mapper.GrapRepository;
+
 @Service
 public class GrapServiceImpl implements GrapService {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -38,31 +39,33 @@ public class GrapServiceImpl implements GrapService {
 	String senderSno ;
 
     @Autowired
-    KamtecRepository kakaoRepository;
-        
+    GrapRepository grapRepository;
+    
+    @Autowired
+    GrapMessageModel grapMessageModel;
+    
 	@Override 
-	public MessageDto save(MessageDto messageDto) throws Exception  { 
-		String result = "OK";
+	public GrapMessageModel  save(MessageDto messageDto) throws Exception  {		
 		Date date = new Date();
+		JSONParser jsonParser = new JSONParser(); 
+		String result = "OK"; 
+		
 		try {	
 			URL url = new URL(baseUrl); // URL 설정  
-
-			// RestTemplate 에 MessageConverter 세팅
-		    List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
+			List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
+			RestTemplate restTemplate = new RestTemplate();
+			HttpHeaders headers = new HttpHeaders();
+			
+			// RestTemplate 에 MessageConverter 세팅		    
 		    converters.add(new FormHttpMessageConverter());
 		    converters.add(new StringHttpMessageConverter());
 			converters.add(new MappingJackson2HttpMessageConverter());
 		 
-		    RestTemplate restTemplate = new RestTemplate();
 		    restTemplate.setMessageConverters(converters);  
-			
-			HttpHeaders headers = new HttpHeaders();
+						
 			headers.setContentType(MediaType.APPLICATION_JSON); 
 			headers.add("cp-key-spec", cpKeySpec);
-
-			// messageDto.setAccountId("dhl19923");
-			messageDto.setSenderSno(senderSno);
-			messageDto.setReceiverId(messageDto.getAccountId() + "@seohan.com");
+		
 			switch(messageDto.getTemplate_code()){  
 				case "COM_LONG_03":
 					messageDto.setText(" [시스템 알림] \n\n" +
@@ -78,23 +81,29 @@ public class GrapServiceImpl implements GrapService {
 						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
 						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
 					break;
-			}  
-
+			}
+			
+			grapMessageModel.builder()
+			.senderSno(senderSno)
+			.receiverId(messageDto.getAccountId() + "@seohan.com")
+			.text(messageDto.getText());
+			
+			grapRepository.save(grapMessageModel);
+			
 			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);			 
-			ResponseEntity<String> response = restTemplate.postForEntity(url.toString(), requestEntity, String.class); 
-			JSONParser jsonParser = new JSONParser(); 
+			ResponseEntity<String> response = restTemplate.postForEntity(url.toString(), requestEntity, String.class);
+			
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());
 			JSONObject docuObject = (JSONObject) jsonObject.get(0); 			//배열 i번째 요소 불러오고
 			
 			if ( jsonObject.get("msg") != null){
-				result = jsonObject.get("msg").toString();
+				grapMessageModel.setReport_code(jsonObject.get("msg").toString());
 			}
-			messageDto.setResult(result);
-			System.out.println(response);  
-			return messageDto;			 	
+			
+			return grapMessageModel;			 	
 		} catch (Exception e) {
-			System.out.println("message Send failed" + messageDto.toString());
-			return messageDto;
+			System.out.println("message Send failed" + grapMessageModel.toString());
+			return grapMessageModel;
 		}
 	} 
 }

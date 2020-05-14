@@ -1,4 +1,4 @@
-package com.kakao.Controller;
+package com.message.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,17 +8,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kakao.Dto.MessageDto;
-import com.kakao.Service.GrapService;
-import com.kakao.Service.KakaoService;
-import com.kakao.domain.KakaoMessageModel;
+import com.message.Dto.MessageDto;
+import com.message.domain.GrapMessageModel;
+import com.message.domain.KakaoMessageModel;
+import com.message.service.GrapService;
+import com.message.service.KakaoService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @RequestMapping("/kakao")
 @Slf4j 
 @RestController
-class KakaoMessageRestController {
+class MessageRestController {
 	@Autowired
 	private KakaoService kakaoService;
 	
@@ -26,17 +27,15 @@ class KakaoMessageRestController {
 	private GrapService grapService;
 
 	@PostMapping("/save")
-	public ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception   { 		
-		String result;
-		if(isNumeric(messageDto.getAccountId().substring(0,1))) {  
-			// grap massenger http Post   
-			MessageDto messageDtoCreated = grapService.save(messageDto );
-			KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );			
-			result = messageDtoCreated.getResult();
-			return new ResponseEntity<String>(result , HttpStatus.OK);
+	public ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception   {		
+		if(isNumeric(messageDto.getAccountId().substring(0,1))) {  			// grap massenger http Post   
+			GrapMessageModel grapMessageModelCreated = grapService.save(messageDto );
+			KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );	
+			
+			return new ResponseEntity<String>(grapMessageModelCreated.getResponse(), HttpStatus.OK);
 		}else		{ 
 			KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );					
-			return new ResponseEntity<String>("OK", HttpStatus.OK);	
+			return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);	
 		}		
 		
 	}

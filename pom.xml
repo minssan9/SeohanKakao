@@ -5,10 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.seohan</groupId>
-	<artifactId>SeohanKakao</artifactId>
+	<artifactId>SeohanMessage</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SeohanKakao</name>
-	<description>SeohanKakao</description>
+	<name>SeohanMessage</name>
+	<description>SeohanMessage</description>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<start-class>com.kakao.KakaoApplication</start-class>
+		<start-class>com.message.MessageApplication</start-class>
 	</properties>
 
 	<dependencies>

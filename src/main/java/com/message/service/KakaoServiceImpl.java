@@ -1,4 +1,4 @@
-package com.kakao.Service;
+package com.message.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.kakao.Dto.MessageDto;
-import com.kakao.domain.KakaoMessageModel;
-import com.kakao.kamtec.mapper.KamtecRepository;
-import com.kakao.seohan.mapper.SeohanRepository;
+import com.message.Dto.MessageDto;
+import com.message.domain.KakaoMessageModel;
+import com.message.kamtec.mapper.KamtecRepository;
+import com.message.seohan.mapper.SeohanRepository;
 
 @Service
 public class KakaoServiceImpl implements KakaoService {
