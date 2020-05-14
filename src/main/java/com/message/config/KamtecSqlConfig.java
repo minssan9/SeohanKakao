@@ -64,7 +64,7 @@ public class KamtecSqlConfig {
                 jpaProperties.getProperties(), new HibernateSettings());
         return builder.dataSource(kamtecDataSource())
         		.properties(properties)
-        		.packages("com.message.domain")
+        		.packages("com.message.mssql.domain")
                 .persistenceUnit("kamtec")
                 .build();
     }

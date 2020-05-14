@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.message.Dto.MessageDto;
-import com.message.domain.GrapMessageModel;
-import com.message.domain.KakaoMessageModel;
+import com.message.mssql.domain.GrapMessageModel;
+import com.message.mssql.domain.KakaoMessageModel;
 import com.message.service.GrapService;
 import com.message.service.KakaoService;
 

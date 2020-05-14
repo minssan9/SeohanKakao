@@ -22,8 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.message.Dto.MessageDto;
-import com.message.domain.GrapMessageModel;
 import com.message.grap.mapper.GrapRepository;
+import com.message.mssql.domain.GrapMessageModel;
 
 @Service
 public class GrapServiceImpl implements GrapService {
@@ -65,7 +65,9 @@ public class GrapServiceImpl implements GrapService {
 						
 			headers.setContentType(MediaType.APPLICATION_JSON); 
 			headers.add("cp-key-spec", cpKeySpec);
-		
+			messageDto.setSenderSno(senderSno);
+			messageDto.setReceiverId(messageDto.getEmail());
+
 			switch(messageDto.getTemplate_code()){  
 				case "COM_LONG_03":
 					messageDto.setText(" [시스템 알림] \n\n" +

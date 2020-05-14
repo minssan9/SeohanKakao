@@ -1,8 +1,11 @@
-package com.message.domain;
+package com.message.db2.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -15,9 +18,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "PCMLIB.ORG_USER")
-public class OrgUser {
+@IdClass(OrgUser.class)
+@Table(name="ORG_USER", schema="PCMLIB")
+public class OrgUser implements Serializable{
+	@Id
 	private String COMPANYCODE	;
+	@Id
 	private String EMPID	;
 	private String LOGINID	;
 	private String ALIAS	;

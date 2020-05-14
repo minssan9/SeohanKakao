@@ -53,7 +53,7 @@ public class DB2SqlConfig {
                 jpaProperties.getProperties(), new HibernateSettings());
         return builder.dataSource(db2DataSource())
         		.properties(properties)
-        		.packages("com.message.domain")
+        		.packages("com.message.db2.domain")
                 .persistenceUnit("db2")
                 .build();
     }

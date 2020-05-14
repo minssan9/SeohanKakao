@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.message.Dto.MessageDto;
-import com.message.domain.GrapMessageModel;
+import com.message.mssql.domain.GrapMessageModel;
 import com.message.service.GrapService;
 
 public class MessageTest {

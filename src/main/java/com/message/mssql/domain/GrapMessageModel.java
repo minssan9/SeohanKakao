@@ -1,4 +1,4 @@
-package com.message.domain;
+package com.message.mssql.domain;
 
 import java.util.Date;
 

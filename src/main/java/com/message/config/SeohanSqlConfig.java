@@ -71,7 +71,7 @@ public class SeohanSqlConfig {
                 jpaProperties.getProperties(), new HibernateSettings());
         return builder.dataSource(seohanDataSource())
         		.properties(properties)
-        		.packages("com.message.domain")
+        		.packages("com.message.mssql.domain")
                 .persistenceUnit("seohan")
                 .build();
     }

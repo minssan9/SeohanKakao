@@ -14,9 +14,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor 
 public class MessageDto {
-//kakao 
 	private String company; 
-	private String mt_refkey;	 
+	private String email; 
+//kakao 
+	
+	private String mt_refkey;
 	private String subject;
 	private String content; 
 	private String msg_status;
