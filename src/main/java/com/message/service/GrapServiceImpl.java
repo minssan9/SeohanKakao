@@ -22,8 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.message.dto.MessageDto;
-import com.message.grap.mapper.GrapRepository;
+import com.message.kamtec.mapper.KamtecGrapRepository;
 import com.message.mssql.domain.GrapMessageModel;
+import com.message.seohan.mapper.SeohanGrapRepository;
 
 @Service
 public class GrapServiceImpl implements GrapService {
@@ -39,21 +40,24 @@ public class GrapServiceImpl implements GrapService {
 	String senderSno ;
 
     @Autowired
-    GrapRepository grapRepository;
+    SeohanGrapRepository seohanGrapRepository;
     
     @Autowired
-    GrapMessageModel grapMessageModel;
+    KamtecGrapRepository kamtecGrapRepository;
+    
     
 	@Override 
 	public GrapMessageModel  save(MessageDto messageDto) throws Exception  {		
 		Date date = new Date();
 		JSONParser jsonParser = new JSONParser(); 
 		String result = "OK"; 
+		GrapMessageModel grapMessageModel = new GrapMessageModel();
 		
 		try {	
 			URL url = new URL(baseUrl); // URL 설정  
 			List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
 			RestTemplate restTemplate = new RestTemplate();
+			
 			HttpHeaders headers = new HttpHeaders();
 			
 			// RestTemplate 에 MessageConverter 세팅		    
@@ -86,11 +90,10 @@ public class GrapServiceImpl implements GrapService {
 			}
 			
 			grapMessageModel.builder()
-			.senderSno(senderSno)
-			.receiverId(messageDto.getAccountId() + "@seohan.com")
-			.text(messageDto.getText());
-			
-			grapRepository.save(grapMessageModel);
+					.senderSno(senderSno)
+					.receiverId(messageDto.getAccountId() + "@seohan.com")
+					.text(messageDto.getText())
+					.build();				
 			
 			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);			 
 			ResponseEntity<String> response = restTemplate.postForEntity(url.toString(), requestEntity, String.class);
@@ -101,6 +104,17 @@ public class GrapServiceImpl implements GrapService {
 			if ( jsonObject.get("msg") != null){
 				grapMessageModel.setReport_code(jsonObject.get("msg").toString());
 			}
+
+			switch (messageDto.getCompany()) {
+				case "SEOHAN":
+					seohanGrapRepository.save(grapMessageModel);
+					break;
+				case "KAMTEC":
+					kamtecGrapRepository.save(grapMessageModel);
+					break;
+				default:
+					break;
+			}	
 			
 			return grapMessageModel;			 	
 		} catch (Exception e) {

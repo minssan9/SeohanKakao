@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.message.mssql.domain.KakaoMessageModel; 
 
 @Repository
-public interface SeohanRepository extends JpaRepository<KakaoMessageModel, Long> {	 
+public interface SeohanKakaoRepository extends JpaRepository<KakaoMessageModel, Long> {	 
 
 	@Query(value="insert into ita_talk_tran " + 
 				"(date_client_req, content, msg_status, recipient_num, msg_type, sender_key, template_code, country_code)" + 

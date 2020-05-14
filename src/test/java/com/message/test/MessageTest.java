@@ -16,20 +16,17 @@ public class MessageTest {
 	private GrapService grapService;
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
-		MessageDto messageDto = new MessageDto();
-		messageDto.builder()
-		 .receiverId("4150149")
-		 .text("테스트 발송");		 
+	public void test() throws Exception {
+		
+		MessageDto messageDto = new MessageDto().builder()
+				.receiverId("4150149")
+				.email("4150149")
+				.content("테스트 발송")
+				.text("테스트 발송")
+				 .build();
 		 
-		GrapMessageModel grapMessageModelCreated = new GrapMessageModel(); 
-		try {
-			grapMessageModelCreated = grapService.save(messageDto);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		GrapMessageModel grapMessageModelCreated = new GrapMessageModel();
+		grapMessageModelCreated = grapService.save(messageDto);
 	}
 
 }
