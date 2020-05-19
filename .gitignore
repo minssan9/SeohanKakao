@@ -46,3 +46,4 @@ bin/com/seohan/kakao/Service/KakaoServiceImpl.class
 src/main/resources/account.properties
 bin/
 
+*.gz
