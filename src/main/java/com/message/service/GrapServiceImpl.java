@@ -31,7 +31,7 @@ public class GrapServiceImpl implements GrapService {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
  
 	@Value("${grap.apiUrl}")
-	String baseUrl ;
+	String grapUrl ;
 
 	@Value("${grap.apiKey}")
 	String cpKeySpec ;
@@ -50,11 +50,11 @@ public class GrapServiceImpl implements GrapService {
 	public GrapMessageModel  save(MessageDto messageDto) throws Exception  {		
 		Date date = new Date();
 		JSONParser jsonParser = new JSONParser(); 
-		String result = "OK"; 
-		GrapMessageModel grapMessageModel = new GrapMessageModel();
+		String result = "OK";
+
 		
 		try {	
-			URL url = new URL(baseUrl); // URL 설정  
+			URL url = new URL(grapUrl); // URL 설정
 			List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
 			RestTemplate restTemplate = new RestTemplate();
 			
@@ -88,38 +88,42 @@ public class GrapServiceImpl implements GrapService {
 						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
 					break;
 			}
-			
-			grapMessageModel.builder()
-					.senderSno(senderSno)
-					.receiverId(messageDto.getAccountId() + "@seohan.com")
-					.text(messageDto.getText())
-					.build();				
-			
-			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);			 
+			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);
+
 			ResponseEntity<String> response = restTemplate.postForEntity(url.toString(), requestEntity, String.class);
 			
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());
 			JSONObject docuObject = (JSONObject) jsonObject.get(0); 			//배열 i번째 요소 불러오고
-			
-			if ( jsonObject.get("msg") != null){
-				grapMessageModel.setReport_code(jsonObject.get("msg").toString());
-			}
 
-			switch (messageDto.getCompany()) {
-				case "SEOHAN":
-					seohanGrapRepository.save(grapMessageModel);
-					break;
-				case "KAMTEC":
-					kamtecGrapRepository.save(grapMessageModel);
-					break;
-				default:
-					break;
-			}	
-			
-			return grapMessageModel;			 	
+			if ( jsonObject.get("msg") != null){
+				 result = jsonObject.get("msg").toString();
+			}
 		} catch (Exception e) {
-			System.out.println("message Send failed" + grapMessageModel.toString());
-			return grapMessageModel;
+			System.out.println("message Send failed" + messageDto.toString());
 		}
+
+		GrapMessageModel grapMessageModel = new GrapMessageModel().builder()
+				.callback(messageDto.getSendNo())
+				.date_client_req(new Date())
+				.senderSno(senderSno)
+				.subject(messageDto.getSubject())
+				.template_code(messageDto.getTemplate_code())
+				.text(messageDto.getText())
+				.receiverId(messageDto.getEmail())
+				.text(messageDto.getText())
+				.report_code(result)
+				.build();
+
+		switch (messageDto.getCompany()) {
+			case "SEOHAN":	case "ENP":
+				seohanGrapRepository.save(grapMessageModel);
+				break;
+			case "KAMTEC":
+				kamtecGrapRepository.save(grapMessageModel);
+				break;
+			default:
+				break;
+		}
+		return grapMessageModel;
 	} 
 }
