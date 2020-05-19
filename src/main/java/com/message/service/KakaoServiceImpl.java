@@ -82,6 +82,7 @@ public class KakaoServiceImpl implements KakaoService {
 
 			switch (messageDto.getCompany()) {
 				case "SEOHAN":
+				case "ENP":
 					kakaoMessageModel.setSender_key(senderKeySeohan);
 					seohanRepository.save(kakaoMessageModel);
 					break;
