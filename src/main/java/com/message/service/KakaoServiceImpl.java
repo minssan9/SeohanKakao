@@ -1,4 +1,4 @@
-package com.kakao.Service;
+package com.message.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.kakao.Dto.MessageDto;
-import com.kakao.domain.KakaoMessageModel;
-import com.kakao.kamtec.mapper.KamtecRepository;
-import com.kakao.seohan.mapper.SeohanRepository;
+import com.message.dto.MessageDto;
+import com.message.kamtec.mapper.KamtecKakaoRepository;
+import com.message.mssql.domain.KakaoMessageModel;
+import com.message.seohan.mapper.SeohanKakaoRepository;
 
 @Service
 public class KakaoServiceImpl implements KakaoService {
@@ -23,9 +23,9 @@ public class KakaoServiceImpl implements KakaoService {
 	String senderKeyKamtec ;
 
     @Autowired
-    KamtecRepository kamtecRepository;
+    KamtecKakaoRepository kamtecRepository;
     @Autowired
-    SeohanRepository seohanRepository;
+    SeohanKakaoRepository seohanRepository;
         
 	@Override 
 	public KakaoMessageModel save(MessageDto messageDto) throws Exception  {
@@ -82,6 +82,7 @@ public class KakaoServiceImpl implements KakaoService {
 
 			switch (messageDto.getCompany()) {
 				case "SEOHAN":
+				case "ENP":
 					kakaoMessageModel.setSender_key(senderKeySeohan);
 					seohanRepository.save(kakaoMessageModel);
 					break;

@@ -1,13 +1,10 @@
-package com.kakao.Service;
+package com.message.service;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.kakao.Dto.MessageDto;
-import com.kakao.kamtec.mapper.KamtecRepository;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,12 +21,17 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.message.dto.MessageDto;
+import com.message.kamtec.mapper.KamtecGrapRepository;
+import com.message.mssql.domain.GrapMessageModel;
+import com.message.seohan.mapper.SeohanGrapRepository;
+
 @Service
 public class GrapServiceImpl implements GrapService {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
  
 	@Value("${grap.apiUrl}")
-	String baseUrl ;
+	String grapUrl ;
 
 	@Value("${grap.apiKey}")
 	String cpKeySpec ;
@@ -38,29 +40,35 @@ public class GrapServiceImpl implements GrapService {
 	String senderSno ;
 
     @Autowired
-    KamtecRepository kakaoRepository;
-        
+    SeohanGrapRepository seohanGrapRepository;
+    
+    @Autowired
+    KamtecGrapRepository kamtecGrapRepository;
+    
+    
 	@Override 
-	public MessageDto save(MessageDto messageDto) throws Exception  { 
-		String result = "OK";
+	public GrapMessageModel  save(MessageDto messageDto) throws Exception  {		
 		Date date = new Date();
-		try {	
-			URL url = new URL(baseUrl); // URL 설정  
+		JSONParser jsonParser = new JSONParser(); 
+		String result = "OK";
 
-			// RestTemplate 에 MessageConverter 세팅
-		    List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
+		
+		try {	
+			URL url = new URL(grapUrl); // URL 설정
+			List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
+			RestTemplate restTemplate = new RestTemplate();
+			
+			HttpHeaders headers = new HttpHeaders();
+			
+			// RestTemplate 에 MessageConverter 세팅		    
 		    converters.add(new FormHttpMessageConverter());
 		    converters.add(new StringHttpMessageConverter());
 			converters.add(new MappingJackson2HttpMessageConverter());
 		 
-		    RestTemplate restTemplate = new RestTemplate();
 		    restTemplate.setMessageConverters(converters);  
-			
-			HttpHeaders headers = new HttpHeaders();
+						
 			headers.setContentType(MediaType.APPLICATION_JSON); 
 			headers.add("cp-key-spec", cpKeySpec);
-
-			//  messageDto.setAccountId("dhl19923");
 			messageDto.setSenderSno(senderSno);
 			messageDto.setReceiverId(messageDto.getEmail());
 
@@ -79,23 +87,43 @@ public class GrapServiceImpl implements GrapService {
 						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
 						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
 					break;
-			}  
+			}
+			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);
 
-			HttpEntity<MessageDto> requestEntity =  new  HttpEntity<>( messageDto, headers);			 
-			ResponseEntity<String> response = restTemplate.postForEntity(url.toString(), requestEntity, String.class); 
-			JSONParser jsonParser = new JSONParser(); 
+			ResponseEntity<String> response = restTemplate.postForEntity(url.toString(), requestEntity, String.class);
+			
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());
 			JSONObject docuObject = (JSONObject) jsonObject.get(0); 			//배열 i번째 요소 불러오고
-			
+
 			if ( jsonObject.get("msg") != null){
-				result = jsonObject.get("msg").toString();
+				 result = jsonObject.get("msg").toString();
 			}
-			messageDto.setResult(result);
-			System.out.println(response);  
-			return messageDto;			 	
 		} catch (Exception e) {
 			System.out.println("message Send failed" + messageDto.toString());
-			return messageDto;
 		}
+
+		GrapMessageModel grapMessageModel = new GrapMessageModel().builder()
+				.callback(messageDto.getSendNo())
+				.date_client_req(new Date())
+				.senderSno(senderSno)
+				.subject(messageDto.getSubject())
+				.template_code(messageDto.getTemplate_code())
+				.text(messageDto.getText())
+				.receiverId(messageDto.getEmail())
+				.text(messageDto.getText())
+				.report_code(result)
+				.build();
+
+		switch (messageDto.getCompany()) {
+			case "SEOHAN":	case "ENP":
+				seohanGrapRepository.save(grapMessageModel);
+				break;
+			case "KAMTEC":
+				kamtecGrapRepository.save(grapMessageModel);
+				break;
+			default:
+				break;
+		}
+		return grapMessageModel;
 	} 
 }

@@ -5,10 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.seohan</groupId>
-	<artifactId>SeohanKakao</artifactId>
+	<artifactId>SeohanMessage</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SeohanKakao</name>
-	<description>SeohanKakao</description>
+	<name>SeohanMessage</name>
+	<description>SeohanMessage</description>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<start-class>com.kakao.KakaoApplication</start-class>
+		<start-class>com.message.MessageApplication</start-class>
 	</properties>
 
 	<dependencies>
@@ -39,6 +39,27 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<version>6.4.0.jre8</version>
 			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.sourceforge.jtds</groupId>
+			<artifactId>jtds</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP	</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jt400</groupId>
+			<artifactId>jt400</artifactId>
+			<version>9.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

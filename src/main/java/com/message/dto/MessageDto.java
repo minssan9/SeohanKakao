@@ -1,4 +1,4 @@
-package com.kakao.Dto;
+package com.message.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +18,7 @@ public class MessageDto {
 	private String email; 
 //kakao 
 	
-	private String mt_refkey; 
-	private String accountId; 
+	private String mt_refkey;
 	private String subject;
 	private String content; 
 	private String msg_status;
@@ -27,6 +26,7 @@ public class MessageDto {
 	private String country_code; 
 	private String template_code;  
 
+	private String accountId;
 //grap 
 	private String cpKeySpec;
 	private String senderSno;

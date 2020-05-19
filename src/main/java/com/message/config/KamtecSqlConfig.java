@@ -1,11 +1,9 @@
-package com.kakao.config;
+package com.message.config;
 
 import java.util.Objects;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
@@ -15,7 +13,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -28,61 +25,56 @@ import lombok.var;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "seohanEntityManagerFactory", transactionManagerRef = "seohanTransactionManager", basePackages = {"com.kakao.seohan.mapper"})
-public class SeohanSqlConfig { 
+@EnableJpaRepositories(entityManagerFactoryRef = "kamtecEntityManagerFactory", transactionManagerRef = "kamtecTransactionManager", basePackages = {"com.message.kamtec.mapper"})
+public class KamtecSqlConfig {
 	private final JpaProperties jpaProperties;
     private final HibernateProperties hibernateProperties;
 
-    public SeohanSqlConfig(JpaProperties jpaProperties, HibernateProperties hibernateProperties) {
+    public KamtecSqlConfig(JpaProperties jpaProperties, HibernateProperties hibernateProperties) {
         this.jpaProperties = jpaProperties;
         this.hibernateProperties = hibernateProperties; 
     }
     
     @Bean
-    @Primary
-    @ConfigurationProperties(prefix = "spring.datasource.seohan")
-    public DataSourceProperties seohanDataSourceProperties() {
+    @ConfigurationProperties(prefix = "spring.datasource.kamtec")
+    public DataSourceProperties kamtecDataSourceProperties() {
         return new DataSourceProperties();
-    }
-
+    } 
+    
 //    @Bean
-//    @Primary
-//    public DataSource seohanDataSource(@Qualifier("seohanDataSourceProperties") DataSourceProperties dataSourceProperties) {
+//    public DataSource kamtecDataSource(@Qualifier("kamtecDataSourceProperties") DataSourceProperties dataSourceProperties) {
 //        return dataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
 //    }
+    
     @Bean
-    @Primary
-    @ConfigurationProperties(prefix = "spring.datasource.seohan")
-    public DataSource seohanDataSource() {
+    @ConfigurationProperties(prefix = "spring.datasource.kamtec")
+    public DataSource kamtecDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
     
 //    @Bean
-//    @Primary
-//    public LocalContainerEntityManagerFactoryBean seohanEntityManagerFactory(@Qualifier("seohanDataSource") DataSource hubDataSource, EntityManagerFactoryBuilder builder) {
-//        return builder.dataSource(hubDataSource)
-//        		.packages("com.kakao.domain")
-//                .persistenceUnit("seohan").build();
+//    public LocalContainerEntityManagerFactoryBean kamtecEntityManagerFactory(@Qualifier("kamtecDataSource") DataSource hubDataSource, EntityManagerFactoryBuilder builder) {
+//        return builder.dataSource(hubDataSource).packages("com.message.domain")
+//                .persistenceUnit("kamtec").build();
 //    }
+
     @Bean
-    @Primary
-    public LocalContainerEntityManagerFactoryBean seohanEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+    public LocalContainerEntityManagerFactoryBean kamtecEntityManagerFactory(EntityManagerFactoryBuilder builder) {
         var properties = hibernateProperties.determineHibernateProperties(
                 jpaProperties.getProperties(), new HibernateSettings());
-        return builder.dataSource(seohanDataSource())
+        return builder.dataSource(kamtecDataSource())
         		.properties(properties)
-        		.packages("com.kakao.domain")
-                .persistenceUnit("seohan")
+        		.packages("com.message.mssql.domain")
+                .persistenceUnit("kamtec")
                 .build();
     }
+    
 //    @Bean
-//    @Primary
-//    public PlatformTransactionManager seohanTransactionManager(@Qualifier("seohanEntityManagerFactory") EntityManagerFactory factory) {
+//    public PlatformTransactionManager kamtecTransactionManager(@Qualifier("kamtecEntityManagerFactory") EntityManagerFactory factory) {
 //        return new JpaTransactionManager(factory);
 //    }
     @Bean
-    @Primary
-    public PlatformTransactionManager seohanTransactionManager(EntityManagerFactoryBuilder builder) {
-        return new JpaTransactionManager(Objects.requireNonNull(seohanEntityManagerFactory(builder).getObject()));
+    public PlatformTransactionManager kamtecTransactionManager(EntityManagerFactoryBuilder builder) {
+        return new JpaTransactionManager(Objects.requireNonNull(kamtecEntityManagerFactory(builder).getObject()));
     }
 }
