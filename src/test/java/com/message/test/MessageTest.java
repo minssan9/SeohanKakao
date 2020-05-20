@@ -1,5 +1,6 @@
 package com.message.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -38,6 +39,8 @@ public class MessageTest {
 //		restTemplate.postForObject("http://211.40.184.7:5090/kakao/save", messageDto2, String.class);
 		GrapMessageModel grapMessageModelCreated = new GrapMessageModel();
 		grapMessageModelCreated = grapService.save(messageDto2);
+		
+		assertEquals("OK", grapMessageModelCreated.getResponse());
 	}
 
 }
