@@ -25,24 +25,24 @@ class MessageRestController {
 
 	@PostMapping("/save")
 	public @ResponseBody ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception   {
-
-		if(messageDto.getReceiverId()==null){
-			KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );
+		KakaoMessageModel kakaoMessageModelCreated = new KakaoMessageModel();
+		if(messageDto.getReceiverId()==null || messageDto.getReceiverId().equals("")){			//	사번 공백이거나 누락시 카카오 메시지 발송
+			kakaoMessageModelCreated = kakaoService.save(messageDto );
 			return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);
 //			return new ResponseEntity<String>("unRegistered Id ", HttpStatus.BAD_REQUEST);
-		}else{
+		}else{																								
 			String employeeType = messageDto.getReceiverId().substring(0,1);
 
-			if(isNumeric(employeeType)) {
+			if(isNumeric(employeeType)) {			//		사번 첫자리 숫자 -> 사내 직원이면 grap 발송
 				GrapMessageModel grapMessageModelCreated = grapService.save(messageDto );
+				if(messageDto.getCompany().equals("KAMTEC")){			//캄텍은 둘다 발송
+					kakaoService.save(messageDto );				
+				}		
 			}else{
-//				KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );
-//				return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);
-			}
-			KakaoMessageModel kakaoMessageModelCreated = kakaoService.save(messageDto );
-			return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);
+				kakaoService.save(messageDto );				
+			}			
 		}
-
+		return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);
 	}
 
 	public static boolean isNumeric(final String str) {
