@@ -43,10 +43,12 @@ class MessageRestController {
 			String employeeType = messageDto.getReceiverId().substring(0,1);
 			
 			if(isNumeric(employeeType) && !messageDto.getReceiverId().equals("4027090")) {			//		사번 첫자리 숫자 -> 사내 직원이면 grap 발송
-				GrapMessageModel grapMessageModelCreated = grapService.save(messageDto );
 				if(messageDto.getCompany().equals("KAMTEC")){			//캄텍은 둘다 발송
+					GrapMessageModel grapMessageModelCreated = grapKamtecService.save(messageDto );
 					kakaoService.save(messageDto );				
-				}		
+				}else if(messageDto.getCompany().equals("SEOHAN")){
+					GrapMessageModel grapMessageModelCreated = grapService.save(messageDto );
+				}
 			}else{
 				kakaoService.save(messageDto );				
 			}			 
