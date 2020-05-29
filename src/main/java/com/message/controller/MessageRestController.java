@@ -1,15 +1,20 @@
 package com.message.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import com.message.dto.MessageDto;
 import com.message.mssql.domain.GrapMessageModel;
 import com.message.mssql.domain.KakaoMessageModel;
+import com.message.service.GrapKamtecService;
 import com.message.service.GrapService;
 import com.message.service.KakaoService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,9 +28,13 @@ class MessageRestController {
 	@Autowired
 	private GrapService grapService;
 
+	@Autowired
+	private GrapKamtecService grapKamtecService;
+
 	@PostMapping("/save")
 	public @ResponseBody ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception   {
 		KakaoMessageModel kakaoMessageModelCreated = new KakaoMessageModel();
+
 		if(messageDto.getReceiverId()==null || messageDto.getReceiverId().equals("")){			//	사번 공백이거나 누락시 카카오 메시지 발송
 			kakaoMessageModelCreated = kakaoService.save(messageDto );
 			return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);
@@ -40,10 +49,15 @@ class MessageRestController {
 				}		
 			}else{
 				kakaoService.save(messageDto );				
-			}			
+			}			 
+
+
 		}
 		return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);
 	}
+
+
+
 
 	public static boolean isNumeric(final String str) {
 		if (str == null || str.length() == 0) {
