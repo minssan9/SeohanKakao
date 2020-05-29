@@ -103,7 +103,19 @@
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency> 
+				<groupId>org.javassist</groupId> 
+				<artifactId>javassist</artifactId> 
+				<version>3.23.1-GA</version> 
+		</dependency>
+
+
+
 	</dependencies>
+
+
+
 
 	<build>
 		<plugins>

@@ -27,7 +27,7 @@ import com.message.mssql.domain.GrapMessageModel;
 import com.message.seohan.mapper.SeohanGrapRepository;
 
 @Service
-public class GrapServiceImpl implements GrapService {
+public class GrapKamtecServiceImpl implements GrapKamtecService {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
  
 	@Value("${grap.apiUrl}")
@@ -36,12 +36,9 @@ public class GrapServiceImpl implements GrapService {
 	@Value("${grap.apiKey}")
 	String cpKeySpec ;
 	
-	@Value("${grap.seohan.senderSno}")
+	@Value("${grap.kamtec.senderSno}")
 	String senderSno ;
-
-    @Autowired
-    SeohanGrapRepository seohanGrapRepository;
-    
+ 
     @Autowired
     KamtecGrapRepository kamtecGrapRepository;
     
@@ -113,17 +110,8 @@ public class GrapServiceImpl implements GrapService {
 				.text(messageDto.getText())
 				.report_code(result)
 				.build();
-
-		switch (messageDto.getCompany()) {
-			case "SEOHAN":	case "ENP":
-				seohanGrapRepository.save(grapMessageModel);
-				break;
-			case "KAMTEC":
-				kamtecGrapRepository.save(grapMessageModel);
-				break;
-			default:
-				break;
-		}
+  
+		kamtecGrapRepository.save(grapMessageModel); 		
 		return grapMessageModel;
 	} 
 }
