@@ -3,7 +3,6 @@ package com.message.controller;
 import com.message.dto.MessageDto;
 import com.message.mssql.domain.GrapMessageModel;
 import com.message.mssql.domain.KakaoMessageModel;
-import com.message.service.GrapKamtecService;
 import com.message.service.GrapService;
 import com.message.service.KakaoService;
 
@@ -28,30 +27,28 @@ class MessageRestController {
 	@Autowired
 	private GrapService grapService;
 
-	@Autowired
-	private GrapKamtecService grapKamtecService;
-
 	@PostMapping("/save")
-	public @ResponseBody ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception   {
+	public @ResponseBody ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception {
 		KakaoMessageModel kakaoMessageModelCreated = new KakaoMessageModel();
+		String employeeType = messageDto.getReceiverId().substring(0,1);
 
-		if(messageDto.getReceiverId()==null || messageDto.getReceiverId().equals("")){			//	사번 공백이거나 누락시 카카오 메시지 발송
+		//	사번 공백, 누락, 숫자로 시작 안할 경우 카카오 메시지 발송
+		if(messageDto.getReceiverId()==null || messageDto.getReceiverId().equals("") || !isNumeric(employeeType) || messageDto.getReceiverId().equals("4027090") ){
 			kakaoMessageModelCreated = kakaoService.save(messageDto );
 			return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);
 //			return new ResponseEntity<String>("unRegistered Id ", HttpStatus.BAD_REQUEST);
-		}else{																								
-			String employeeType = messageDto.getReceiverId().substring(0,1);
-			
-			if(isNumeric(employeeType) && !messageDto.getReceiverId().equals("4027090")) {			//		사번 첫자리 숫자 -> 사내 직원이면 grap 발송
-				if(messageDto.getCompany().equals("KAMTEC")){			//캄텍은 둘다 발송
-					GrapMessageModel grapMessageModelCreated = grapKamtecService.save(messageDto );
-					kakaoService.save(messageDto );				
-				}else if(messageDto.getCompany().equals("SEOHAN")){
-					GrapMessageModel grapMessageModelCreated = grapService.save(messageDto );
-				}
-			}else{
-				kakaoService.save(messageDto );				
-			}			 
+		}else{
+			GrapMessageModel grapMessageModelCreated = new GrapMessageModel();
+			switch (messageDto.getCompany()){
+				case "KAMTEC":
+					grapMessageModelCreated = grapService.save(messageDto );
+					kakaoService.save(messageDto );
+					break;
+				case "SEOHAN":
+				case "ENP":
+					grapMessageModelCreated = grapService.save(messageDto );
+					break;
+			}
 		}
 		return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);
 	}
