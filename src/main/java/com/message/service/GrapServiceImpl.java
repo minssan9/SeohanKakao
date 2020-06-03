@@ -24,8 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import com.message.dto.MessageDto;
 import com.message.kamtec.mapper.KamtecGrapRepository;
 import com.message.mssql.domain.GrapMessageModel;
-import com.message.seohan.mapper.SeohanGrapRepository;
-import sun.plugin2.message.Message;
+import com.message.seohan.mapper.SeohanGrapRepository; 
 
 @Service
 public class GrapServiceImpl implements GrapService {
