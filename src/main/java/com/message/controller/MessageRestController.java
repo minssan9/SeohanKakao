@@ -35,6 +35,8 @@ class MessageRestController {
 		if (messageDto.getReceiverId()!=null && !messageDto.getReceiverId().equals("")) {
 			receiverId  = messageDto.getReceiverId();
 			employeeType = messageDto.getReceiverId().substring(0,1);
+		}else {
+			System.out.println(messageDto.getText());
 		}
 
 		//	사번 공백, 누락, 숫자로 시작 안할 경우 카카오 메시지 발송
@@ -52,6 +54,8 @@ class MessageRestController {
 				case "SEOHAN":
 				case "ENP":
 					grapMessageModelCreated = grapService.save(messageDto );
+					break;
+				default:
 					break;
 			}
 		}
