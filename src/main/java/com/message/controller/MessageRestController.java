@@ -28,8 +28,10 @@ class MessageRestController {
 	private GrapService grapService;
 
 	@PostMapping("/save")
-	public @ResponseBody ResponseEntity<String> createKakaoMessage(@RequestBody MessageDto messageDto ) throws Exception {
+	public @ResponseBody ResponseEntity<String> sendMessage(@RequestBody MessageDto messageDto ) throws Exception {
 		KakaoMessageModel kakaoMessageModelCreated = new KakaoMessageModel();
+		grapService.save(messageDto );
+
 		String employeeType = "";
 		String receiverId = "";
 		if (messageDto.getReceiverId()!=null && !messageDto.getReceiverId().equals("")) {
@@ -43,7 +45,6 @@ class MessageRestController {
 		if( !isNumeric(employeeType) || receiverId.equals("4027090") ){
 			kakaoMessageModelCreated = kakaoService.save(messageDto );
 			return new ResponseEntity<String>(kakaoMessageModelCreated.getReport_code(), HttpStatus.OK);
-//			return new ResponseEntity<String>("unRegistered Id ", HttpStatus.BAD_REQUEST);
 		}else{
 			GrapMessageModel grapMessageModelCreated = new GrapMessageModel();
 			switch (messageDto.getCompany()){

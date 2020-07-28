@@ -12,6 +12,6 @@ public class MessageApplication {
 	private Logger logger = LoggerFactory.getLogger(MessageApplication.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(MessageApplication .class, args);
+		SpringApplication.run(MessageApplication .class, args); 
 	}
 }
