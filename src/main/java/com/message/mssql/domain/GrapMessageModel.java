@@ -1,5 +1,6 @@
 package com.message.mssql.domain;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -28,7 +29,7 @@ public class GrapMessageModel {
 	private int mt_pr;
 	private String callback="";
 	private String country_code="";
-	private Date date_client_req;	
+	private Timestamp date_client_req;	
 	private String msg_status="";
 	@NotNull
 	private int msg_type;

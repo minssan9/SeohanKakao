@@ -1,15 +1,11 @@
 package com.message.service;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.message.dto.MessageDto;
-import com.message.kamtec.mapper.KamtecGrapRepository;
-import com.message.mssql.domain.GrapMessageModel;
-import com.message.seohan.mapper.SeohanGrapRepository;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -25,6 +21,11 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.message.dto.MessageDto;
+import com.message.kamtec.mapper.KamtecGrapRepository;
+import com.message.mssql.domain.GrapMessageModel;
+import com.message.seohan.mapper.SeohanGrapRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,7 +54,7 @@ public class GrapServiceImpl implements GrapService {
     KamtecGrapRepository kamtecGrapRepository;
 
 	@Override 
-	public GrapMessageModel  save(MessageDto messageDto) throws Exception  {
+	public MessageDto  save(MessageDto messageDto) throws Exception  {
 		String result = "OK";
 		JSONParser jsonParser = new JSONParser();
 		GrapMessageModel grapMessageModel = makeMessage(messageDto);
@@ -84,7 +85,7 @@ public class GrapServiceImpl implements GrapService {
 			}
 		} catch (Exception e) {
 			log.error(e.getStackTrace().toString()); 
-			System.out.println("message Send failed" + messageDto.toString());
+			log.error("message Send failed" + messageDto.toString());
 		}
 
 		switch (messageDto.getCompany()) {
@@ -97,21 +98,18 @@ public class GrapServiceImpl implements GrapService {
 			default:
 				break;
 		}
-		return grapMessageModel;
+		return messageDto;
 	}
 
 	 public GrapMessageModel makeMessage(MessageDto messageDto){
 		Date date = new Date();
 		String result = "OK";
-		GrapMessageModel grapMessageModel = new GrapMessageModel();
 
 		switch (messageDto.getCompany()) {
-			case "SEOHAN":	case "ENP":
-				grapMessageModel.setSenderSno(seohanSenderSno);
+			case "SEOHAN":	case "ENP": 
 				messageDto.setSenderSno(seohanSenderSno);
 				break;
-			case "KAMTEC":
-				grapMessageModel.setSenderSno(kamtecSenderSno);
+			case "KAMTEC": 
 				messageDto.setSenderSno(kamtecSenderSno);
 				break;
 			default:
@@ -119,14 +117,15 @@ public class GrapServiceImpl implements GrapService {
 		}
 		messageDto.setReceiverId(messageDto.getEmail());
 
-		grapMessageModel.builder()
+		GrapMessageModel grapMessageModel = GrapMessageModel.builder()
 				.callback(messageDto.getSendNo())
-				.date_client_req(new Date())
+				.date_client_req(new Timestamp(date.getTime()))
 				.subject(messageDto.getSubject())
 				.template_code(messageDto.getTemplate_code())
 				.text(messageDto.getText())
 				.receiverId(messageDto.getEmail())
-				.text(messageDto.getText())
+				.text(messageDto.getContent())
+				.senderSno(messageDto.getSenderSno())
 				.build();
 
 		switch(messageDto.getTemplate_code()){

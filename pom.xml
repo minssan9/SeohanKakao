@@ -6,7 +6,7 @@
 
 	<groupId>com.seohan</groupId>
 	<artifactId>SeohanMessage</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>SeohanMessage</name>
 	<description>SeohanMessage</description>
 	<packaging>jar</packaging>
