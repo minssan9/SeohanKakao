@@ -54,7 +54,7 @@ public class GrapServiceImpl implements GrapService {
     KamtecGrapRepository kamtecGrapRepository;
 
 	@Override 
-	public GrapMessageModel  save(MessageDto messageDto) throws Exception  {
+	public MessageDto  save(MessageDto messageDto) throws Exception  {
 		String result = "OK";
 		JSONParser jsonParser = new JSONParser();
 		GrapMessageModel grapMessageModel = makeMessage(messageDto);
@@ -85,7 +85,7 @@ public class GrapServiceImpl implements GrapService {
 			}
 		} catch (Exception e) {
 			log.error(e.getStackTrace().toString()); 
-			System.out.println("message Send failed" + messageDto.toString());
+			log.error("message Send failed" + messageDto.toString());
 		}
 
 		switch (messageDto.getCompany()) {
@@ -98,7 +98,7 @@ public class GrapServiceImpl implements GrapService {
 			default:
 				break;
 		}
-		return grapMessageModel;
+		return messageDto;
 	}
 
 	 public GrapMessageModel makeMessage(MessageDto messageDto){
