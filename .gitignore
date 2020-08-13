@@ -31,7 +31,6 @@ build/
 ### VS Code ###
 .vscode/
 
-*.properties
 bin/com/seohan/kakao/SeohanKakaoApplicationTests.kt
 bin/com/seohan/kakao/SQLTest$SeohanKakaoApplicationTests.class
 bin/com/seohan/kakao/SQLTest.class
