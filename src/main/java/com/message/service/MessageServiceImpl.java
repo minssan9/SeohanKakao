@@ -1,7 +1,7 @@
 package com.message.service;
 
-import java.text.SimpleDateFormat;
-
+import com.message.auth.domain.OrgUser;
+import com.message.auth.mapper.OrgUserRepository;
 import com.message.dto.MessageDto;
 import com.message.mssql.domain.KakaoMessageModel;
 
@@ -19,7 +19,10 @@ public class MessageServiceImpl implements MessageService {
 	
 	@Autowired
 	private GrapService grapService;
-    
+
+	@Autowired
+	private OrgUserRepository orgUserRepository;
+
 	@Override 
 	public MessageDto  save(MessageDto messageDto) throws Exception  { 
 		KakaoMessageModel kakaoMessageModelCreated = new KakaoMessageModel();		
@@ -29,6 +32,10 @@ public class MessageServiceImpl implements MessageService {
 		if (messageDto.getReceiverId()!=null && !messageDto.getReceiverId().equals("")) {
 			receiverId  = messageDto.getReceiverId();
 			employeeType = messageDto.getReceiverId().substring(0,1);
+
+			OrgUser orgUser = orgUserRepository.findByEmpid(receiverId);
+			messageDto.setEmail(orgUser.getEmail());
+
 		}else {
 			log.warn("Kakao Message will be sended");
 		}
@@ -55,5 +62,4 @@ public class MessageServiceImpl implements MessageService {
 		}
 		return true;
 	}
- 
 }

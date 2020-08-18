@@ -1,4 +1,4 @@
-package com.erp.config;
+package com.message.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.var;
@@ -22,7 +22,7 @@ import java.util.Objects;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "db2EntityManagerFactory", transactionManagerRef = "db2TransactionManager", basePackages = {"com.erp.auth.domain"})
+@EnableJpaRepositories(entityManagerFactoryRef = "db2EntityManagerFactory", transactionManagerRef = "db2TransactionManager", basePackages = {"com.message.auth.domain"})
 public class DB2SqlConfig {
 	private final JpaProperties jpaProperties;
     private final HibernateProperties hibernateProperties;
@@ -60,7 +60,7 @@ public class DB2SqlConfig {
                 jpaProperties.getProperties(), new HibernateSettings());
         return builder.dataSource(db2DataSource())
         		.properties(properties)
-        		.packages("com.message.mssql.domain")
+        		.packages("com.message.auth.domain")
                 .persistenceUnit("db2")
                 .build();
     }
