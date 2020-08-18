@@ -1,6 +1,6 @@
-package com.erp.auth.mapper;
+package com.message.mapper.db2;
 
-import com.erp.auth.domain.Account;
+import com.message.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

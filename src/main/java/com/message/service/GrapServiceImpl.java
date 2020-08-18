@@ -23,9 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.message.dto.MessageDto;
-import com.message.kamtec.mapper.KamtecGrapRepository;
-import com.message.mssql.domain.GrapMessageModel;
-import com.message.seohan.mapper.SeohanGrapRepository;
+import com.message.mapper.kamtec.KamtecGrapRepository;
+import com.message.domain.GrapMessageModel;
+import com.message.mapper.seohan.SeohanGrapRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
