@@ -1,7 +1,7 @@
 package com.message.test;
 
-import com.message.auth.domain.OrgUser;
-import com.message.auth.mapper.OrgUserRepository;
+import com.message.domain.OrgUser;
+import com.message.mapper.db2.OrgUserRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

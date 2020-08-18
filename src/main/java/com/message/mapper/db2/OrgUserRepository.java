@@ -1,10 +1,11 @@
-package com.message.auth.mapper;
+package com.message.mapper.db2;
 
-import com.message.auth.domain.OrgUser;
+import com.message.domain.OrgUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OrgUserRepository extends JpaRepository<OrgUser, String> {
+public interface OrgUserRepository extends JpaRepository<OrgUser, Long> {
     OrgUser findByEmpid(String empid);
+							 
 }

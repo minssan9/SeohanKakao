@@ -1,14 +1,12 @@
 package com.message.service;
 
-import com.message.auth.domain.OrgUser;
-import com.message.auth.mapper.OrgUserRepository;
+import com.message.domain.KakaoMessageModel;
+import com.message.domain.OrgUser;
 import com.message.dto.MessageDto;
-import com.message.mssql.domain.KakaoMessageModel;
-
+import com.message.mapper.db2.OrgUserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

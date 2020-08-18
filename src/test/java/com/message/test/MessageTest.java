@@ -1,17 +1,13 @@
 package com.message.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
+import com.message.dto.MessageDto;
 import com.message.service.MessageService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.message.dto.MessageDto;
-import com.message.mssql.domain.GrapMessageModel;
-import com.message.service.GrapService;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.client.RestTemplate;
+
+import static org.junit.Assert.assertEquals;
+
 
 @SpringBootTest
 public class MessageTest {

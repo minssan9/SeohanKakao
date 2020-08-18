@@ -1,11 +1,14 @@
-package com.message.auth.domain;
+package com.message.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -14,7 +17,7 @@ import java.io.Serializable;
 @Data
 @Builder
 @Table(name = "ORG_USER", schema = "PCMLIB")
-public class Account implements Serializable {
+public class OrgUser implements Serializable {
 
 	@Id
 	@Column(name="EMPID")
