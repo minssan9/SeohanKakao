@@ -19,8 +19,6 @@ public class MessageServiceImpl implements MessageService {
 	
 	@Autowired
 	private GrapService grapService;
-
-	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     
 	@Override 
 	public MessageDto  save(MessageDto messageDto) throws Exception  { 
@@ -32,7 +30,7 @@ public class MessageServiceImpl implements MessageService {
 			receiverId  = messageDto.getReceiverId();
 			employeeType = messageDto.getReceiverId().substring(0,1);
 		}else {
-			log.error(messageDto.getText());
+			log.warn("Kakao Message will be sended");
 		}
 
 		//	사번 공백, 누락, 숫자로 시작 안할 경우 카카오 메시지 발송
