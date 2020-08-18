@@ -1,9 +1,7 @@
 package com.message.service;
 
-import java.text.SimpleDateFormat;
-
 import com.message.dto.MessageDto;
-import com.message.mssql.domain.KakaoMessageModel;
+import com.message.domain.KakaoMessageModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

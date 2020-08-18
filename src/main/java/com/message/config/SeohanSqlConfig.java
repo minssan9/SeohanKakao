@@ -1,11 +1,7 @@
 package com.message.config;
 
-import java.util.Objects;
-
-//import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
-//import org.springframework.beans.factory.annotation.Qualifier;
+import com.zaxxer.hikari.HikariDataSource;
+import lombok.var;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
@@ -22,13 +18,15 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
+import java.util.Objects;
 
-import lombok.var;
+//import javax.persistence.EntityManagerFactory;
+//import org.springframework.beans.factory.annotation.Qualifier;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "seohanEntityManagerFactory", transactionManagerRef = "seohanTransactionManager", basePackages = {"com.message.seohan.mapper"})
+@EnableJpaRepositories(entityManagerFactoryRef = "seohanEntityManagerFactory", transactionManagerRef = "seohanTransactionManager", basePackages = {"com.message.mapper.seohan"})
 public class SeohanSqlConfig { 
 	private final JpaProperties jpaProperties;
     private final HibernateProperties hibernateProperties;
@@ -71,7 +69,7 @@ public class SeohanSqlConfig {
                 jpaProperties.getProperties(), new HibernateSettings());
         return builder.dataSource(seohanDataSource())
         		.properties(properties)
-        		.packages("com.message.mssql.domain")
+        		.packages("com.message.domain")
                 .persistenceUnit("seohan")
                 .build();
     }

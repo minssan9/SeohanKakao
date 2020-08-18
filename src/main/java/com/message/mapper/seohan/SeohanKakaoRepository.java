@@ -1,11 +1,11 @@
-package com.message.seohan.mapper;
+package com.message.mapper.seohan;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.message.mssql.domain.KakaoMessageModel; 
+import com.message.domain.KakaoMessageModel;
 
 @Repository
 public interface SeohanKakaoRepository extends JpaRepository<KakaoMessageModel, Long> {	 

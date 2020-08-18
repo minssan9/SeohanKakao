@@ -1,9 +1,7 @@
 package com.message.config;
 
-import java.util.Objects;
-
-import javax.sql.DataSource;
-
+import com.zaxxer.hikari.HikariDataSource;
+import lombok.var;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
@@ -19,13 +17,12 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.zaxxer.hikari.HikariDataSource;
-
-import lombok.var;
+import javax.sql.DataSource;
+import java.util.Objects;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "kamtecEntityManagerFactory", transactionManagerRef = "kamtecTransactionManager", basePackages = {"com.message.kamtec.mapper"})
+@EnableJpaRepositories(entityManagerFactoryRef = "kamtecEntityManagerFactory", transactionManagerRef = "kamtecTransactionManager", basePackages = {"com.message.mapper.kamtec"})
 public class KamtecSqlConfig {
 	private final JpaProperties jpaProperties;
     private final HibernateProperties hibernateProperties;
@@ -64,7 +61,7 @@ public class KamtecSqlConfig {
                 jpaProperties.getProperties(), new HibernateSettings());
         return builder.dataSource(kamtecDataSource())
         		.properties(properties)
-        		.packages("com.message.mssql.domain")
+        		.packages("com.message.domain")
                 .persistenceUnit("kamtec")
                 .build();
     }

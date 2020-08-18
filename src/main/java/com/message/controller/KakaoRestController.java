@@ -1,8 +1,6 @@
 package com.message.controller;
 
 import com.message.dto.MessageDto;
-import com.message.mssql.domain.GrapMessageModel;
-import com.message.mssql.domain.KakaoMessageModel;
 import com.message.service.MessageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
