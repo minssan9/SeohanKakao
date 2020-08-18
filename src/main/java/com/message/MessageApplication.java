@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 @SpringBootConfiguration
 @PropertySource(value = {"classpath:account.properties" })
 public class MessageApplication {
-	public final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	private Logger logger = LoggerFactory.getLogger(MessageApplication.class);
 
 	public static void main(String[] args) {

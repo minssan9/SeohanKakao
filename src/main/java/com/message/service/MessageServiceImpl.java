@@ -37,7 +37,7 @@ public class MessageServiceImpl implements MessageService {
 			messageDto.setEmail(orgUser.getEmail());
 
 		}else {
-			log.warn("Kakao Message will be sended");
+			log.error(messageDto.getText());
 		}
 
 		//	사번 공백, 누락, 숫자로 시작 안할 경우 카카오 메시지 발송
