@@ -1,9 +1,7 @@
 package com.message.service;
 
 import com.message.domain.KakaoMessageModel;
-import com.message.domain.OrgUser;
 import com.message.dto.MessageDto;
-import com.message.mapper.db2.OrgUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +16,8 @@ public class MessageServiceImpl implements MessageService {
 	@Autowired
 	private GrapService grapService;
 
-	@Autowired
-	private OrgUserRepository orgUserRepository;
+//	@Autowired
+//	private OrgUserRepository orgUserRepository;
 
 	@Override 
 	public MessageDto  save(MessageDto messageDto) throws Exception  { 
@@ -31,8 +29,8 @@ public class MessageServiceImpl implements MessageService {
 			receiverId  = messageDto.getReceiverId();
 			employeeType = messageDto.getReceiverId().substring(0,1);
 
-			OrgUser orgUser = orgUserRepository.findByEmpid(receiverId);
-			messageDto.setEmail(orgUser.getEmail());
+//			OrgUser orgUser = orgUserRepository.findByEmpid(receiverId);
+//			messageDto.setEmail(orgUser.getEmail());
 
 		}else {
 			log.error(messageDto.getText());
