@@ -28,9 +28,7 @@ class MessageRestController {
 
 	@PostMapping
 	public @ResponseBody ResponseEntity<List<MessageDto>> sendMessageList(@RequestBody List<MessageDto> messageDtos ) throws Exception {
-		for (MessageDto messageDto:messageDtos) {
-			messageService.save(messageDto);
-		}
+		messageService.save(messageDtos);
 		return new ResponseEntity<List<MessageDto>>(messageDtos, HttpStatus.OK);
 	}
 }
