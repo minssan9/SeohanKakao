@@ -16,6 +16,8 @@ import lombok.Setter;
 public class MessageDto {
 	private String company; 
 	private String email; 
+	private String senderEmail; 
+	private String receiverEmail; 
 //kakao 
 	
 	private String mt_refkey;
