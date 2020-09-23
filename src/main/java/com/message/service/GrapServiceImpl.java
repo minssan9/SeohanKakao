@@ -109,8 +109,18 @@ public class GrapServiceImpl implements GrapService {
 	@Override
 	public MessageDto  save(MessageDto messageDto) throws Exception  {
 
-		GrapMessageModel grapMessageModel = makeMessage(messageDto);
+		messageDto = makeMessage(messageDto);
 		messageDto.setText(messageDto.getContent());
+
+		GrapMessageModel grapMessageModel = GrapMessageModel.builder()
+				.callback(messageDto.getSendNo())
+				.date_client_req(new Timestamp(new Date().getTime()))
+				.subject(messageDto.getSubject())
+				.template_code(messageDto.getTemplate_code())
+				.text(messageDto.getContent())
+				.receiverId(messageDto.getEmail())
+				.senderSno(messageDto.getSenderSno())
+				.build();
 
 		switch (messageDto.getCompany()) {
 			case "SEOHAN":	case "ENP":
@@ -126,7 +136,7 @@ public class GrapServiceImpl implements GrapService {
 	}
 
 
-	 public GrapMessageModel makeMessage(MessageDto messageDto){
+	 public MessageDto makeMessage(MessageDto messageDto){
 
 		 String nowDateFormatString =  LocalDateTime.now().format(dateFormatString);
 
@@ -141,16 +151,6 @@ public class GrapServiceImpl implements GrapService {
 				break;
 		}
 		messageDto.setReceiverId(messageDto.getEmail());
-
-		GrapMessageModel grapMessageModel = GrapMessageModel.builder()
-				.callback(messageDto.getSendNo())
-				.date_client_req(new Timestamp(new Date().getTime()))
-				.subject(messageDto.getSubject())
-				.template_code(messageDto.getTemplate_code())
-				.text(messageDto.getContent())
-				.receiverId(messageDto.getEmail())
-				.senderSno(messageDto.getSenderSno())
-				.build();
 
 		switch(messageDto.getTemplate_code()){
 //			case "COM_LONG_03":
@@ -170,7 +170,7 @@ public class GrapServiceImpl implements GrapService {
 						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
 				break;
 		}
-		return grapMessageModel;
+		return messageDto;
 	}
 
 }

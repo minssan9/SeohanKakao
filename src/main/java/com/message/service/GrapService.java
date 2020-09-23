@@ -1,6 +1,5 @@
 package com.message.service;
 
-import com.message.domain.GrapMessageModel;
 import com.message.dto.MessageDto;
  
 public interface GrapService { 
@@ -8,6 +7,6 @@ public interface GrapService {
 
 	MessageDto send(MessageDto messageDto) throws Exception;
 
-	GrapMessageModel makeMessage(MessageDto messageDto);
+	MessageDto makeMessage(MessageDto messageDto);
 
 }
