@@ -1,26 +1,27 @@
 package com.message.service;
 
-import java.util.List;
-
 import com.message.domain.KakaoMessageModel;
 import com.message.dto.MessageDto;
-
+import com.message.dto.Receiver;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 @Service
 @Slf4j
 public class MessageServiceImpl implements MessageService {
-	
+	public static final String GRAP_MESSAGE_TYPE = "GRAP";
+	public static final String KAKAO_MESSAGE_TYPE = "KAKAO";
+
 	@Autowired
 	private KakaoService kakaoService;
 	
 	@Autowired
 	private GrapService grapService;
     
-	@Override 
+	@Override
 	public MessageDto  save(MessageDto messageDto) { 
 		KakaoMessageModel kakaoMessageModelCreated = new KakaoMessageModel();		
 		String employeeType = "";
@@ -41,29 +42,40 @@ public class MessageServiceImpl implements MessageService {
 				kakaoMessageModelCreated = kakaoService.save(messageDto ); 
 				messageDto.setResult(kakaoMessageModelCreated.getReport_code());
 			}else{
-				messageDto = grapService.save(messageDto ); 
+				messageDto = grapService.send(messageDto );
 			}		
 			return messageDto;
 		} catch(Exception e){
 			log.error(e.toString());
 			return messageDto;
 		} 
-	} 
-	
-	@Override 
-	public List<MessageDto>  save(List<MessageDto> messageDtos)   { 
-		KakaoMessageModel kakaoMessageModelCreated = new KakaoMessageModel();		
-		String employeeType = "";
-		String receiverId = "";
+	}
 
+
+	@Override 
+	public List<MessageDto>  save(List<MessageDto> messageDtos)   {
 		log.info(messageDtos.toString());
-		
 		
 		for (MessageDto messageDto:messageDtos) {
 			save(messageDto);
 		}
 		return messageDtos;
-	} 
+	}
+
+
+	@Override
+	public MessageDto saveByList(MessageDto messageDto)   {
+		log.info(messageDto.toString());
+
+		for (Receiver receiver:messageDto.getReceivelist()) {
+			messageDto.setCompany(receiver.getCompany());
+			messageDto.setEmail(receiver.getEmail());
+			messageDto.setRecipient_num(receiver.getRecipient_num());
+			messageDto.setReceiverId(receiver.getReceiverId());
+			save(messageDto);
+		}
+		return messageDto;
+	}
 
 
 	@Override
