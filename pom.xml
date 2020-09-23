@@ -6,7 +6,7 @@
 
 	<groupId>com.seohan</groupId>
 	<artifactId>SeohanMessage</artifactId>
-	<version>1.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>SeohanMessage</name>
 	<description>SeohanMessage</description>
 	<packaging>jar</packaging>
@@ -106,6 +106,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>SeohanMessage</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
