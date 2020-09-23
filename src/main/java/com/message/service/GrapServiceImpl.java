@@ -63,18 +63,7 @@ public class GrapServiceImpl implements GrapService {
 		grapDto.setSenderSno(messageDto.getSenderSno());
 		grapDto.setEmail(messageDto.getEmail());
 		grapDto.setReceiverId(messageDto.getEmail());
-		grapDto.setText(messageDto.getContent());
-
-		switch (messageDto.getCompany()) {
-			case "SEOHAN":	case "ENP":
-				grapDto.setSenderSno(seohanSenderSno);
-				break;
-			case "KAMTEC":
-				grapDto.setSenderSno(kamtecSenderSno);
-				break;
-			default:
-				break;
-		}
+		grapDto.setText(messageDto.getText());
 
 		try {
 			List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();			// RestTemplate 에 MessageConverter 세팅
@@ -159,7 +148,7 @@ public class GrapServiceImpl implements GrapService {
 //						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
 //				break;
 			default:
-				messageDto.setContent(" [시스템 알림] \n\n" +
+				messageDto.setText(" [시스템 알림] \n\n" +
 						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +
 						" ■ 발신 일시 : " + nowDateFormatString + "\n" +
 						" ■ 발신자 : " + messageDto.getSendName() + "\n" +
