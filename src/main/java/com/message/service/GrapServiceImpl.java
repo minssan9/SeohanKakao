@@ -55,6 +55,7 @@ public class GrapServiceImpl implements GrapService {
 	public MessageDto send(MessageDto messageDto) throws Exception {
 		JSONParser jsonParser = new JSONParser();
 		URL url = new URL(grapUrl); // URL 설정
+		messageDto = makeMessage(messageDto);
 
 		//		.ReceiverId(messageDto.getReceiverId());
 		GrapDto grapDto = new GrapDto();
@@ -109,9 +110,6 @@ public class GrapServiceImpl implements GrapService {
 	@Override
 	public MessageDto  save(MessageDto messageDto) throws Exception  {
 
-		messageDto = makeMessage(messageDto);
-		messageDto.setText(messageDto.getContent());
-
 		GrapMessageModel grapMessageModel = GrapMessageModel.builder()
 				.callback(messageDto.getSendNo())
 				.date_client_req(new Timestamp(new Date().getTime()))
@@ -137,7 +135,6 @@ public class GrapServiceImpl implements GrapService {
 
 
 	 public MessageDto makeMessage(MessageDto messageDto){
-
 		 String nowDateFormatString =  LocalDateTime.now().format(dateFormatString);
 
 		switch (messageDto.getCompany()) {
@@ -162,7 +159,7 @@ public class GrapServiceImpl implements GrapService {
 //						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
 //				break;
 			default:
-				messageDto.setText(" [시스템 알림] \n\n" +
+				messageDto.setContent(" [시스템 알림] \n\n" +
 						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +
 						" ■ 발신 일시 : " + nowDateFormatString + "\n" +
 						" ■ 발신자 : " + messageDto.getSendName() + "\n" +
