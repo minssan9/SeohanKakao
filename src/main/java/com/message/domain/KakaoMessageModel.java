@@ -1,19 +1,9 @@
 package com.message.domain;
 
-import java.util.Date;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Getter
@@ -29,22 +19,22 @@ public class KakaoMessageModel {
 	private int mt_pr;
 	private String mt_refkey;
 	private String priority="";
-	private Date date_client_req;
+	private LocalDate date_client_req;
 	private String subject;
 	private String content;
 	private String callback="";
 	private String msg_status;
 	private String recipient_num;
-	private Date date_mt_sent;
-	private Date date_rslt;
-	private Date date_mt_report;
+	private LocalDate date_mt_sent;
+	private LocalDate date_rslt;
+	private LocalDate date_mt_report;
 	private String report_code;
 	private String rs_id;
 	private String country_code;
 	private int msg_type;
 	private String crypto_yn;
 	private String ita_id;
-	private Date reg_date;
+	private LocalDate reg_date;
 	private String sender_key;
 	private String template_code;
 	private String response_method="";
@@ -59,6 +49,6 @@ public class KakaoMessageModel {
 	private int etc_num_1;
 	private int etc_num_2;
 	private int etc_num_3;
-	private Date etc_date_1; 
+	private LocalDate etc_date_1;
 	
 }

@@ -7,7 +7,9 @@ import java.util.List;
 public interface MessageService {
 	MessageDto save(MessageDto messageDto); 
 	
-	List<MessageDto> save(List<MessageDto> messageDtos); 
-	
+	List<MessageDto> save(List<MessageDto> messageDtos);
+
+	MessageDto saveByList(MessageDto messageDto);
+
 	public boolean isNumeric( String str);
 }

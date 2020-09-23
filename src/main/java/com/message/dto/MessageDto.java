@@ -1,11 +1,8 @@
 package com.message.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.List;
 
 @Data 
 @Getter
@@ -14,34 +11,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor 
 public class MessageDto {
-	private String messagetype;
 	private String company; 
-	private String email; 
-	private String senderEmail; 
-	private String receiverEmail; 
-//kakao 
-	
-	private String mt_refkey;
+	private String email;
+	private String senderEmail;
+	private String receiverEmail;
+//kakao
 	private String subject;
-	private String content; 
-	private String msg_status;
-	private String recipient_num; 
-	private String country_code; 
-	private String template_code;  
-
-	private String accountId;
-//grap 
-	private String cpKeySpec;
+	private String content;
+	private String recipient_num;
+	private String template_code;
+	private String result;
+//grap
 	private String senderSno;
 	private String receiverId;
 	private String text;
 
-	private String code;
-	private String codeno;
-	private String msg;
-	private String data;
-
 	private String sendNo;
 	private String sendName;
-	private String result;
+
+	private List<Receiver> receivelist;
+	public List<Receiver> getReceiverList(){
+		return receivelist;
+	}
 }

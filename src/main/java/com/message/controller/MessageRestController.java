@@ -1,6 +1,7 @@
 package com.message.controller;
 
 import com.message.dto.MessageDto;
+import com.message.dto.Receiver;
 import com.message.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,15 @@ class MessageRestController {
 			messageService.save(messageDto);
 		}
 		return new ResponseEntity<List<MessageDto>>(messageDtos, HttpStatus.OK);
+	}
+
+	@PostMapping("/list")
+	public @ResponseBody ResponseEntity sendMessage(@RequestBody MessageDto messageDto ) throws Exception {
+		List<Receiver> receivers = messageDto.getReceiverList();
+
+			messageService.saveByList(messageDto);
+
+		return new ResponseEntity(messageDto, HttpStatus.OK);
 	}
 
 
