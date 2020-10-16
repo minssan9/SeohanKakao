@@ -3,14 +3,13 @@ package com.message.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Getter
 @Setter
 @Entity
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ITA_TALK_TRAN")
 public class KakaoMessageModel {  
@@ -18,26 +17,26 @@ public class KakaoMessageModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int mt_pr;
 	private String mt_refkey;
-	private String priority="";
-	private LocalDate date_client_req;
+	private String priority;
+	private LocalDateTime date_client_req;
 	private String subject;
 	private String content;
-	private String callback="";
+	private String callback;
 	private String msg_status;
 	private String recipient_num;
-	private LocalDate date_mt_sent;
-	private LocalDate date_rslt;
-	private LocalDate date_mt_report;
+	private LocalDateTime date_mt_sent;
+	private LocalDateTime date_rslt;
+	private LocalDateTime date_mt_report;
 	private String report_code;
 	private String rs_id;
 	private String country_code;
 	private int msg_type;
 	private String crypto_yn;
 	private String ita_id;
-	private LocalDate reg_date;
+	private LocalDateTime reg_date;
 	private String sender_key;
 	private String template_code;
-	private String response_method="";
+	private String response_method;
 	private String ad_flag = "";
 	private String kko_btn_type;
 	private String kko_btn_info;
@@ -49,6 +48,9 @@ public class KakaoMessageModel {
 	private int etc_num_1;
 	private int etc_num_2;
 	private int etc_num_3;
-	private LocalDate etc_date_1;
-	
+	private LocalDateTime etc_date_1;
+
+	public KakaoMessageModel() {
+
+	}
 }

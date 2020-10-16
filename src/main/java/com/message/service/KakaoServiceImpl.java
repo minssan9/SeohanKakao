@@ -9,16 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import static com.message.MessageApplication.dateFormat;
 import static com.message.MessageApplication.dateFormatString;
+import static com.message.MessageApplication.dateTimeFormatString;
 
 @Service
 public class KakaoServiceImpl implements KakaoService {
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
- 
 	@Value("${kakaoMessage.seohan.apiKey}")
 	String senderKeySeohan ;
 	
@@ -33,12 +30,10 @@ public class KakaoServiceImpl implements KakaoService {
 	@Override 
 	public KakaoMessageModel save(MessageDto messageDto) throws Exception  {
 		KakaoMessageModel kakaoMessageModel = new KakaoMessageModel();
-		LocalDate date = LocalDate.now();
-		String nowDate  = LocalDate.now().format(dateFormatString);
-		String nowFormatDate  = LocalDate.now().format(dateFormat);
+		LocalDateTime date = LocalDateTime.now();
+		String nowFormatDate  = LocalDateTime.now().format(dateFormatString);
 
-		try {		
-
+		try {
 			kakaoMessageModel.setSubject(messageDto.getSubject());
 			kakaoMessageModel.setContent(messageDto.getContent());
 			kakaoMessageModel.setRecipient_num(messageDto.getRecipient_num());
@@ -62,13 +57,13 @@ public class KakaoServiceImpl implements KakaoService {
 				case "COM_LONG_00":
 					kakaoMessageModel.setContent(" [시스템 알림] \n\n" +
 						" ■ 시스템 구분 : " + kakaoMessageModel.getSubject() + "\n" +  
-						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
+						" ■ 발신 일시 : " + LocalDateTime.now().format(dateTimeFormatString) + "\n" +
 						" ■ 상세 내용\r\n" + kakaoMessageModel.getContent() );
 					break; 
 				case "COM_LONG_03": 
 					kakaoMessageModel.setContent(" [시스템 발송] \n\n" +
 						" ■ 시스템 구분 : " + kakaoMessageModel.getSubject() + "\n" +  
-						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
+						" ■ 발신 일시 : " + LocalDateTime.now().format(dateTimeFormatString) + "\n" +
 						" ■ 발신자 : " + messageDto.getSendName() + "\n" + 
 						" ■ 발신 번호 : " + messageDto.getSendNo() + "\n" + 
 						" ■ 상세 내용\r\n" + kakaoMessageModel.getContent() + "\n\n" + 
@@ -78,7 +73,7 @@ public class KakaoServiceImpl implements KakaoService {
 				default:
 					kakaoMessageModel.setContent(" [시스템 알림] \n\n" +
 						" ■ 시스템 구분 : " + kakaoMessageModel.getSubject() + "\n" +  
-						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" + 
+						" ■ 발신 일시 : " + LocalDateTime.now().format(dateTimeFormatString) + "\n" +
 						" ■ 상세 내용\r\n" + kakaoMessageModel.getContent() + "\n\n" + 
 						" 본 알림톡 대상이 아닌 경우 관련 부서에 연락 바랍니다." + "\n" + 
 						" 자세한 내용은 전산시스템에서 확인하시기 바랍니다.");
@@ -109,9 +104,7 @@ public class KakaoServiceImpl implements KakaoService {
 	@Override
 	public KakaoMessageModel send(KakaoDto  kakaoDto) throws Exception  {
 		KakaoMessageModel kakaoMessageModel = new KakaoMessageModel();
-		LocalDate date = LocalDate.now();
-		String nowDate  = LocalDate.now().format(dateFormatString);
-		String nowFormatDate  = LocalDate.now().format(dateFormat);
+		LocalDateTime date = LocalDateTime.now();
 
 		try {
 			kakaoMessageModel.setSubject(kakaoDto.getSubject());
@@ -136,13 +129,13 @@ public class KakaoServiceImpl implements KakaoService {
 				case "COM_LONG_00":
 					kakaoMessageModel.setContent(" [시스템 알림] \n\n" +
 							" ■ 시스템 구분 : " + kakaoMessageModel.getSubject() + "\n" +
-							" ■ 발신 일시 : " + nowFormatDate + "\n" +
+							" ■ 발신 일시 : " + LocalDateTime.now().format(dateTimeFormatString) + "\n" +
 							" ■ 상세 내용\r\n" + kakaoMessageModel.getContent() );
 					break;
 				case "COM_LONG_03":
 					kakaoMessageModel.setContent(" [시스템 발송] \n\n" +
 							" ■ 시스템 구분 : " + kakaoMessageModel.getSubject() + "\n" +
-							" ■ 발신 일시 : " + nowFormatDate + "\n" +
+							" ■ 발신 일시 : " + LocalDateTime.now().format(dateTimeFormatString) + "\n" +
 							" ■ 발신자 : " + kakaoDto.getSendName() + "\n" +
 							" ■ 발신 번호 : " + kakaoDto.getSendNo() + "\n" +
 							" ■ 상세 내용\r\n" + kakaoMessageModel.getContent() + "\n\n" +
@@ -152,7 +145,7 @@ public class KakaoServiceImpl implements KakaoService {
 				default:
 					kakaoMessageModel.setContent(" [시스템 알림] \n\n" +
 							" ■ 시스템 구분 : " + kakaoMessageModel.getSubject() + "\n" +
-							" ■ 발신 일시 : " + nowFormatDate + "\n" +
+							" ■ 발신 일시 : " + LocalDateTime.now().format(dateTimeFormatString) + "\n" +
 							" ■ 상세 내용\r\n" + kakaoMessageModel.getContent() + "\n\n" +
 							" 본 알림톡 대상이 아닌 경우 관련 부서에 연락 바랍니다." + "\n" +
 							" 자세한 내용은 전산시스템에서 확인하시기 바랍니다.");

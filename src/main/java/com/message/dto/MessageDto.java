@@ -11,23 +11,27 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor 
 public class MessageDto {
-	private String company; 
-	private String email;
+	private String company;
 	private String senderEmail;
-	private String receiverEmail;
+	private String sendNo;
+	private String sendName;
+
 //kakao
 	private String subject;
 	private String content;
-	private String recipient_num;
 	private String template_code;
 	private String result;
+
+	private String recipient_num;
 //grap
 	private String senderSno;
-	private String receiverId;
 	private String text;
 
-	private String sendNo;
-	private String sendName;
+	private String receiverId;
+
+
+	private String email;
+	private String receiverEmail;
 
 	private List<Receiver> receivelist;
 	public List<Receiver> getReceiverList(){

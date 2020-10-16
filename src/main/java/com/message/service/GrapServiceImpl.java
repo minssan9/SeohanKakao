@@ -22,13 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URL;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static com.message.MessageApplication.dateFormatString;
+import static com.message.MessageApplication.dateTimeFormatString;
 
 @Service
 @Slf4j
@@ -101,7 +99,7 @@ public class GrapServiceImpl implements GrapService {
 
 		GrapMessageModel grapMessageModel = GrapMessageModel.builder()
 				.callback(messageDto.getSendNo())
-				.date_client_req(new Timestamp(new Date().getTime()))
+				.date_client_req(LocalDateTime.now())
 				.subject(messageDto.getSubject())
 				.template_code(messageDto.getTemplate_code())
 				.text(messageDto.getContent())
@@ -124,7 +122,6 @@ public class GrapServiceImpl implements GrapService {
 
 
 	 public MessageDto makeMessage(MessageDto messageDto){
-		 String nowDateFormatString =  LocalDateTime.now().format(dateFormatString);
 
 		switch (messageDto.getCompany()) {
 			case "SEOHAN":	case "ENP": 
@@ -150,7 +147,7 @@ public class GrapServiceImpl implements GrapService {
 			default:
 				messageDto.setText(" [시스템 알림] \n\n" +
 						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +
-						" ■ 발신 일시 : " + nowDateFormatString + "\n" +
+						" ■ 발신 일시 : " + LocalDateTime.now().format(dateTimeFormatString) + "\n" +
 						" ■ 발신자 : " + messageDto.getSendName() + "\n" +
 						" ■ 발신 번호 : " + messageDto.getSendNo() + "\n" +
 						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );

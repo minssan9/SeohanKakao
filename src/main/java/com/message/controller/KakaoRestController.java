@@ -18,12 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j 
 @RestController
 class KakaoRestController {
+
 	@Autowired
-	private MessageService messageService; 
+	MessageService messageService;
 
 	@PostMapping("/save")
-	public @ResponseBody ResponseEntity<String> sendMessage(@RequestBody MessageDto messageDto ) throws Exception {
+	public @ResponseBody ResponseEntity<String> sendMessage(@RequestBody MessageDto messageDto )  {
 		messageService.save(messageDto);
-		return new ResponseEntity<String>(messageDto.getResult(), HttpStatus.OK);
+		return new ResponseEntity(messageDto.getResult(), HttpStatus.OK);
 	} 
 }
