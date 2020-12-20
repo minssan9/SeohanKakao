@@ -1,7 +1,7 @@
 package com.message.service;
 
+import com.message.config.RestTemplateHttp;
 import com.message.domain.GrapMessageModel;
-import com.message.dto.GrapDto;
 import com.message.dto.MessageDto;
 import com.message.mapper.kamtec.KamtecGrapRepository;
 import com.message.mapper.seohan.SeohanGrapRepository;
@@ -14,146 +14,111 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.message.MessageApplication.dateTimeFormatString;
+import static com.message.util.CommonUtil.dateTimeFormatString;
 
 @Service
 @Slf4j
-public class GrapServiceImpl implements GrapService {
-	@Value("${grap.apiUrl}")
-	String grapUrl;
-
-	@Value("${grap.apiKey}")
-	String CP_KEY_SPEC;
-	
-	@Value("${grap.seohan.senderSno}")
-	String seohanSenderSno ;
-
-	@Value("${grap.kamtec.senderSno}")
-	String kamtecSenderSno ;
-
+public class GrapServiceImpl implements MessageService {
+    @Value("${grap.apiUrl}")
+    static String grapUrl;
+    @Value("${grap.apiKey}")
+    static String CP_KEY_SPEC;
+    @Value("${grap.seohan.senderSno}")
+    String seohanSenderSno;
+    @Value("${grap.kamtec.senderSno}")
+    String kamtecSenderSno;
     @Autowired
     SeohanGrapRepository seohanGrapRepository;
-    
     @Autowired
     KamtecGrapRepository kamtecGrapRepository;
+    @Autowired
+    RestTemplateHttp restTemplateHttp;
 
-	@Override
-	public MessageDto send(MessageDto messageDto) throws Exception {
-		JSONParser jsonParser = new JSONParser();
-		URL url = new URL(grapUrl); // URL 설정
-		messageDto = makeMessage(messageDto);
+    @Override
+    public MessageDto send(MessageDto messageDto) throws Exception {
+        messageDto = makeMessage(messageDto);
 
-		//		.ReceiverId(messageDto.getReceiverId());
-		GrapDto grapDto = new GrapDto();
-		grapDto.setSubject(messageDto.getSubject());
-		grapDto.setSenderSno(messageDto.getSenderSno());
-		grapDto.setEmail(messageDto.getEmail());
-		grapDto.setReceiverId(messageDto.getEmail());
-		grapDto.setText(messageDto.getText());
+        RestTemplate restTemplate = restTemplateHttp.getRestTemplate();
+        JSONParser jsonParser = new JSONParser();
+        URL url = new URL(grapUrl); // URL 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("cp-key-spec", CP_KEY_SPEC);
 
-		try {
-			List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();			// RestTemplate 에 MessageConverter 세팅
-			converters.add(new FormHttpMessageConverter());
-			converters.add(new StringHttpMessageConverter());
-			converters.add(new MappingJackson2HttpMessageConverter());
-
-			RestTemplate restTemplate = new RestTemplate();
-			restTemplate.setMessageConverters(converters);
-
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.add("cp-key-spec", CP_KEY_SPEC);
-
-			HttpEntity requestEntity =  new HttpEntity<>( grapDto, headers);
-			ResponseEntity response = restTemplate.postForEntity(url.toString(), requestEntity, String.class);
-
-			JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());
-			JSONObject docuObject = (JSONObject) jsonObject.get(0); 			//배열 i번째 요소 불러오고
-
-			if ( jsonObject.get("msg") != null){
-				messageDto.setResult(jsonObject.get("msg").toString());
-			}
-		} catch (Exception e) {
-			log.error(e.getStackTrace().toString());
-			log.error("message Send failed" + messageDto.toString());
-		}
-
-		MessageDto savedMessageDto = save(messageDto);
-		return messageDto;
-	}
-
-	@Override
-	public MessageDto  save(MessageDto messageDto) throws Exception  {
-
-		GrapMessageModel grapMessageModel = GrapMessageModel.builder()
-				.callback(messageDto.getSendNo())
-				.date_client_req(LocalDateTime.now())
-				.subject(messageDto.getSubject())
-				.template_code(messageDto.getTemplate_code())
-				.text(messageDto.getContent())
-				.receiverId(messageDto.getEmail())
-				.senderSno(messageDto.getSenderSno())
-				.build();
-
-		switch (messageDto.getCompany()) {
-			case "SEOHAN":	case "ENP":
-				seohanGrapRepository.save(grapMessageModel);
-				break;
-			case "KAMTEC":
-				kamtecGrapRepository.save(grapMessageModel);
-				break;
-			default:
-				break;
-		}
-		return messageDto;
-	}
+        HttpEntity requestEntity = new HttpEntity<>(messageDto, headers);
 
 
-	 public MessageDto makeMessage(MessageDto messageDto){
+        ResponseEntity response = restTemplate.postForEntity(url.toString(), requestEntity, String.class);
 
-		switch (messageDto.getCompany()) {
-			case "SEOHAN":	case "ENP": 
-				messageDto.setSenderSno(seohanSenderSno);
-				break;
-			case "KAMTEC": 
-				messageDto.setSenderSno(kamtecSenderSno);
-				break;
-			default:
-				break;
-		}
-		messageDto.setReceiverId(messageDto.getEmail());
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());
 
-		switch(messageDto.getTemplate_code()){
-//			case "COM_LONG_03":
-//				messageDto.setText(" [시스템 알림] \n\n" +
-//						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +
-//						" ■ 발신 일시 : " + dateFormat.format(date) + "\n" +
-//						" ■ 발신자 : " + messageDto.getSendName() + "\n" +
-//						" ■ 발신 번호 : " + messageDto.getSendNo() + "\n" +
-//						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
-//				break;
-			default:
-				messageDto.setText(" [시스템 알림] \n\n" +
-						" ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +
-						" ■ 발신 일시 : " + LocalDateTime.now().format(dateTimeFormatString) + "\n" +
-						" ■ 발신자 : " + messageDto.getSendName() + "\n" +
-						" ■ 발신 번호 : " + messageDto.getSendNo() + "\n" +
-						" ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n" );
-				break;
-		}
-		return messageDto;
-	}
+        if (jsonObject.get("msg") != null) messageDto.setResult(jsonObject.get("msg").toString());
+
+        return save(messageDto);
+    }
+
+    @Override
+    public List<MessageDto> send(List<MessageDto> messageDtos) throws Exception {
+        List<MessageDto> returnMessageDtos = null;
+        for (MessageDto messageDto : messageDtos) {
+            returnMessageDtos.add(send(messageDto));
+        }
+        return returnMessageDtos;
+    }
+
+    public MessageDto save(MessageDto messageDto) {
+        GrapMessageModel grapMessageModel = GrapMessageModel.builder()
+                .callback(messageDto.getSendNo())
+                .date_client_req(LocalDateTime.now())
+                .subject(messageDto.getSubject())
+                .template_code(messageDto.getTemplate_code())
+                .text(messageDto.getContent())
+                .receiverId(messageDto.getEmail())
+                .senderSno(messageDto.getSenderSno())
+                .build();
+
+        switch (messageDto.getCompany()) {
+            case "SEOHAN":
+            case "ENP":
+                seohanGrapRepository.save(grapMessageModel);
+                break;
+            case "KAMTEC":
+                kamtecGrapRepository.save(grapMessageModel);
+                break;
+            default:
+                break;
+        }
+        return messageDto;
+    }
+
+    public MessageDto makeMessage(MessageDto messageDto) {
+        switch (messageDto.getCompany()) {
+            case "SEOHAN":
+            case "ENP":
+                messageDto.setSenderSno(seohanSenderSno);
+                break;
+            case "KAMTEC":
+                messageDto.setSenderSno(kamtecSenderSno);
+                break;
+            default:
+                break;
+        }
+        messageDto.setText(" [시스템 알림] \n\n" +
+                " ■ 시스템 구분 : " + messageDto.getSubject() + "\n" +
+                " ■ 발신 일시 : " + LocalDateTime.now().format(dateTimeFormatString) + "\n" +
+                " ■ 발신자 : " + messageDto.getSendName() + "\n" +
+                " ■ 발신 번호 : " + messageDto.getSendNo() + "\n" +
+                " ■ 상세 내용\r\n" + messageDto.getContent() + "\n\n");
+        messageDto.setEmail(messageDto.getEmail());
+        messageDto.setReceiverId(messageDto.getEmail());
+        return messageDto;
+    }
 
 }

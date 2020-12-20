@@ -5,11 +5,6 @@ import com.message.dto.MessageDto;
 import java.util.List;
 
 public interface MessageService {
-	MessageDto save(MessageDto messageDto); 
-	
-	List<MessageDto> save(List<MessageDto> messageDtos);
-
-	MessageDto saveByList(MessageDto messageDto);
-
-	public boolean isNumeric( String str);
+	MessageDto send(MessageDto messageDto) throws Exception;
+	List<MessageDto> send(List<MessageDto> messageDtos) throws Exception;
 }

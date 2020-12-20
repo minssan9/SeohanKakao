@@ -33,27 +33,16 @@ public class KamtecSqlConfig {
     }
     
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.kamtec")
     public DataSourceProperties kamtecDataSourceProperties() {
         return new DataSourceProperties();
     } 
-    
-//    @Bean
-//    public DataSource kamtecDataSource(@Qualifier("kamtecDataSourceProperties") DataSourceProperties dataSourceProperties) {
-//        return dataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
-//    }
+
     
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.kamtec")
     public DataSource kamtecDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
-    
-//    @Bean
-//    public LocalContainerEntityManagerFactoryBean kamtecEntityManagerFactory(@Qualifier("kamtecDataSource") DataSource hubDataSource, EntityManagerFactoryBuilder builder) {
-//        return builder.dataSource(hubDataSource).packages("com.message.domain")
-//                .persistenceUnit("kamtec").build();
-//    }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean kamtecEntityManagerFactory(EntityManagerFactoryBuilder builder) {
@@ -62,14 +51,10 @@ public class KamtecSqlConfig {
         return builder.dataSource(kamtecDataSource())
         		.properties(properties)
         		.packages("com.message.domain")
-                .persistenceUnit("kamtec")
+                .persistenceUnit("kamtecEntityManager")
                 .build();
     }
-    
-//    @Bean
-//    public PlatformTransactionManager kamtecTransactionManager(@Qualifier("kamtecEntityManagerFactory") EntityManagerFactory factory) {
-//        return new JpaTransactionManager(factory);
-//    }
+
     @Bean
     public PlatformTransactionManager kamtecTransactionManager(EntityManagerFactoryBuilder builder) {
         return new JpaTransactionManager(Objects.requireNonNull(kamtecEntityManagerFactory(builder).getObject()));

@@ -4,7 +4,7 @@ import lombok.*;
 
 @Data
 @Builder
-public class Receiver {
+public class ReceiverDto {
     private String company;
     private String receiverId;
     private String recipient_num;

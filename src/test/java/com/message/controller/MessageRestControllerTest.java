@@ -1,7 +1,7 @@
 package com.message.controller;
 
 import com.message.dto.MessageDto;
-import com.message.dto.Receiver;
+import com.message.dto.ReceiverDto;
 import com.message.service.MessageService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,17 +29,17 @@ public class MessageRestControllerTest {
 
     @Test
     public void 메시지테스트() throws Exception {
-        List<Receiver> receiverList = new ArrayList<>();
-        Receiver receiver = Receiver.builder()
+        List<ReceiverDto> receiverDtoList = new ArrayList<>();
+        ReceiverDto receiverDto = ReceiverDto.builder()
                 .receiverId("4150149")
                 .company("SEOHAN")
                 .email("4150149@seohan.com")
                 .recipient_num("01067766160")
                 .build();
-        receiverList.add(receiver);
+        receiverDtoList.add(receiverDto);
 
         MessageDto messageDto = MessageDto.builder()
-                .receivelist(receiverList)
+                .receivers(receiverDtoList)
                 .content(" test 발송 ")
                 .text(" test 발송 ")
                 .sendNo("01234567890")

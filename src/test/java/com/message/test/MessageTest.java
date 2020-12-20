@@ -1,34 +1,35 @@
 package com.message.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
+import com.message.dto.MessageDto;
+import com.message.dto.ReceiverDto;
+import com.message.service.MessageService;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.message.service.GrapService;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessageTest {
-
-
 	@Autowired
-	private GrapService grapService;
+	private MessageService messageService;
 
-//	@Test
-//	public void test() throws Exception {
-//		
-//		MessageDto messageDto = new MessageDto().builder()
-//				.receiverId("4150149")
-//				.email("4150149@seohan.com")
-//				.subject("test push")
-//				.content("테스트 발송")
-//				.text("테스트 발송")
-//				 .build(); 
-//		
-////		RestTemplate restTemplate = new RestTemplate();
-////		restTemplate.postForObject("http://211.40.184.7:5090/kakao/save", messageDto2, String.class);
-//		GrapMessageModel grapMessageModelCreated = new GrapMessageModel();
-//		grapMessageModelCreated = grapService.save(messageDto);
-//		
-////		assertEquals("OK", grapMessageModelCreated.getResponse());
-//	} 
+	@Test
+	public void test() throws Exception {
+		List<ReceiverDto> receiverDtoLIst = new ArrayList<>();
+		receiverDtoLIst.add(ReceiverDto.builder()
+							.receiverId("4150149")
+							.email("4150149@seohan.com")
+							.build());
+
+		MessageDto messageDto = new MessageDto().builder()
+				.subject("test push")
+				.content("테스트 발송")
+				.text("테스트 발송")
+				.receivers(receiverDtoLIst)
+				 .build();
+
+		messageDto  = messageService.send(messageDto);
+
+
+	}
 }

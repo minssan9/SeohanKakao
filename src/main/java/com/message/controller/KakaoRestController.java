@@ -1,6 +1,7 @@
 package com.message.controller;
 
 import com.message.dto.MessageDto;
+import com.message.service.CommonMessageService;
 import com.message.service.MessageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @RequestMapping("/kakao")
 @Slf4j 
 @RestController
 class KakaoRestController {
 
-	@Autowired
-	MessageService messageService;
+	@Autowired CommonMessageService commonMessageService;
 
 	@PostMapping("/save")
-	public @ResponseBody ResponseEntity<String> sendMessage(@RequestBody MessageDto messageDto )  {
-		messageService.save(messageDto);
-		return new ResponseEntity(messageDto.getResult(), HttpStatus.OK);
+	public @ResponseBody ResponseEntity<String> sendMessage(@RequestBody List<MessageDto> messageDtos ) throws Exception {
+		return new ResponseEntity(commonMessageService.sendMessage(messageDtos), HttpStatus.OK);
 	} 
 }

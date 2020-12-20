@@ -1,18 +1,17 @@
 package com.message.domain;
 
+import com.message.dto.MessageDto;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
 @Getter
-@Setter
 @Entity
 @Builder
 @AllArgsConstructor
 @Table(name = "ITA_TALK_TRAN")
-public class KakaoMessageModel {  
+public class KakaoMessageModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int mt_pr;
@@ -50,7 +49,24 @@ public class KakaoMessageModel {
 	private int etc_num_3;
 	private LocalDateTime etc_date_1;
 
-	public KakaoMessageModel() {
+	public KakaoMessageModel(MessageDto messageDto, String senderKey) {
+		LocalDateTime date = LocalDateTime.now();
 
+		this.subject = messageDto.getSubject();
+		this.content = messageDto.getContent();
+		this.recipient_num = messageDto.getRecipient_num();
+		this.template_code = messageDto.getTemplate_code();
+		this.mt_refkey = senderKey;
+		this.ita_id = " ";
+		this.ad_flag = "N";
+		this.response_method = "push";
+		this.priority = "S";
+		this.callback = "";
+		this.reg_date = date;
+		this.date_client_req = date;
+		this.msg_type = 1008;
+		this.country_code = "82";
+		this.msg_status =  "1";
+		this.template_code = "COM_LONG_03";
 	}
 }
